@@ -484,10 +484,15 @@ select.select { border: 2px solid var(--line); border-radius: 999px; padding: 10
 .info-card .ic { font-size: 2rem; margin-bottom: 8px; }
 .faq-item { border-bottom: 1px solid var(--line); padding: 16px 0; }
 .faq-item:last-child { border-bottom: 0; }
-.faq-item h4 { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.faq-item h4 { margin: 0; }
+.faq-toggle {
+  width: 100%; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; background: none; border: 0; padding: 4px 2px; font: inherit; font-weight: 700;
+  color: inherit; text-align: start; border-radius: 8px;
+}
 .faq-item p { color: var(--muted); margin-top: 8px; display: none; }
 .faq-item.open p { display: block; }
-.faq-item .tog { color: var(--primary); font-size: 1.4rem; transition: transform .2s; }
+.faq-item .tog { color: var(--primary); font-size: 1.4rem; transition: transform .2s; flex-shrink: 0; }
 .faq-item.open .tog { transform: rotate(45deg); }
 
 /* ---------- متجاوب ---------- */
@@ -764,3 +769,38 @@ body::before {
 @media (max-width: 760px) {
   .shop-toolbar { position: static; }
 }
+
+/* ============================================================
+   إتاحة الوصول (Accessibility) — عبر مهارة ui-ux-pro-max
+   حلقات تركيز مرئية لكل عنصر تفاعلي عند التنقّل بلوحة المفاتيح
+   ============================================================ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+.cart-btn:focus-visible, .lang-btn:focus-visible, .menu-toggle:focus-visible,
+.chip:focus-visible, .btn:focus-visible, .faq-toggle:focus-visible,
+.cat-card:focus-visible, .pcard a:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+.search-box input:focus-visible,
+.form-row input:focus-visible,
+.form-row select:focus-visible,
+.form-row textarea:focus-visible,
+select.select:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+/* على الأزرار ذات الخلفية الملوّنة استخدم حلقة بيضاء لتباين أوضح */
+.btn-wa:focus-visible, .btn-accent:focus-visible, .btn-primary:focus-visible {
+  outline-color: #fff;
+  box-shadow: 0 0 0 5px rgba(255,255,255,.55);
+}
+.cat-card:focus-visible { outline-color: #fff; }

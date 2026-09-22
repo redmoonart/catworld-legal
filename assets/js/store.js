@@ -544,7 +544,11 @@
      FAQ
      ============================================================ */
   function initFAQ() {
-    $$(".faq-item h4").forEach((h) => h.addEventListener("click", () => h.parentElement.classList.toggle("open")));
+    $$(".faq-toggle").forEach((btn) => btn.addEventListener("click", () => {
+      const item = btn.closest(".faq-item");
+      const open = item.classList.toggle("open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    }));
   }
 
   /* ---------- التشغيل ---------- */
