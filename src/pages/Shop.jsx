@@ -1,0 +1,88 @@
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useI18n } from "../i18n/I18nContext";
+import { PRODUCTS } from "../data/products";
+import ProductCard from "../components/ProductCard";
+import PageHead from "../components/PageHead";
+import { pName } from "../lib/product";
+
+export default function Shop() {
+  const { t, lang } = useI18n();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [cat, setCat] = useState(searchParams.get("cat") || "all");
+  const [q, setQ] = useState("");
+  const [sort, setSort] = useState("default");
+
+  useEffect(() => {
+    setCat(searchParams.get("cat") || "all");
+  }, [searchParams]);
+
+  function handleCat(c) {
+    setCat(c);
+    setSearchParams(c === "all" ? {} : { cat: c });
+  }
+
+  const list = useMemo(() => {
+    let l = PRODUCTS.slice();
+    if (cat !== "all") l = l.filter((p) => p.category === cat);
+    if (q) {
+      const qq = q.trim().toLowerCase();
+      l = l.filter((p) =>
+        [p.name, p.nameFr, p.nameEn, p.desc, p.descFr, p.descEn].some((s) => (s || "").toLowerCase().includes(qq))
+      );
+    }
+    if (sort === "price-asc") l.sort((a, b) => a.price - b.price);
+    else if (sort === "price-desc") l.sort((a, b) => b.price - a.price);
+    else if (sort === "name") l.sort((a, b) => pName(a, lang).localeCompare(pName(b, lang), lang));
+    return l;
+  }, [cat, q, sort, lang]);
+
+  return (
+    <>
+      <PageHead title={t("shop.head_title")} subtitle={t("shop.head_sub")} chips={["🧸", "🎒", "🚗", "✏️"]} />
+      <section className="section">
+        <div className="wrap">
+          <div className="shop-toolbar">
+            <div className="chips">
+              <button className={`chip${cat === "all" ? " active" : ""}`} onClick={() => handleCat("all")}>
+                {t("shop.chip_all")}
+              </button>
+              <button className={`chip${cat === "toys" ? " active" : ""}`} onClick={() => handleCat("toys")}>
+                {t("shop.chip_toys")}
+              </button>
+              <button className={`chip${cat === "school" ? " active" : ""}`} onClick={() => handleCat("school")}>
+                {t("shop.chip_school")}
+              </button>
+            </div>
+            <select className="select" aria-label="sort" value={sort} onChange={(e) => setSort(e.target.value)}>
+              <option value="default">{t("shop.sort_default")}</option>
+              <option value="price-asc">{t("shop.sort_price_asc")}</option>
+              <option value="price-desc">{t("shop.sort_price_desc")}</option>
+              <option value="name">{t("shop.sort_name")}</option>
+            </select>
+            <div className="search-box">
+              <input type="search" placeholder={t("shop.search_ph")} value={q} onChange={(e) => setQ(e.target.value)} />
+              <span className="ic">🔍</span>
+            </div>
+          </div>
+          <p style={{ color: "var(--muted)", marginBottom: 16 }}>
+            <span>{list.length} {t("shop.count_unit")}</span>
+          </p>
+          {list.length ? (
+            <div className="products-grid">
+              {list.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          ) : (
+            <div className="empty-state" style={{ gridColumn: "1/-1" }}>
+              <div className="em">🔍</div>
+              <h3>{t("shop.no_results_t")}</h3>
+              <p>{t("shop.no_results_p")}</p>
+            </div>
+          )}
+        </div>
+      </section>
+    </>
+  );
+}

@@ -289,7 +289,7 @@ ul { list-style: none; }
 
 /* صورة الشعار (رأس الثعلب) بدل الإيموجي */
 .brand .logo.logo-img {
-  background-image: url("../img/hero.png");
+  background-image: url("../assets/hero.png");
   background-repeat: no-repeat;
   background-size: 300%;
   background-position: 18% 30%;

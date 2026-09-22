@@ -1,20 +1,14 @@
 /* ============================================================
-   نظام تعدّد اللغات — Kids of the Future
-   العربية (أساسية / RTL) + الفرنسية + الإنجليزية
+   نظام تعدّد اللغات — Kids of the Future (بيانات فقط، يُستخدم عبر I18nContext)
    ============================================================ */
-(function () {
-  "use strict";
 
-  var LANG_KEY = "kof_lang";
-  var DEFAULT = "ar";
+export const META = {
+  ar: { label: "العربية", short: "ع", dir: "rtl", htmlLang: "ar" },
+  fr: { label: "Français", short: "FR", dir: "ltr", htmlLang: "fr" },
+  en: { label: "English", short: "EN", dir: "ltr", htmlLang: "en" },
+};
 
-  var META = {
-    ar: { label: "العربية", short: "ع", dir: "rtl", htmlLang: "ar" },
-    fr: { label: "Français", short: "FR", dir: "ltr", htmlLang: "fr" },
-    en: { label: "English", short: "EN", dir: "ltr", htmlLang: "en" },
-  };
-
-  var STR = {
+export const STR = {
     ar: {
       "tagline": "ألعاب الأطفال والأدوات المدرسية — توصيل لكل ولايات الجزائر",
       "ribbon": "🚚 توصيل لكل 58 ولاية · 💵 الدفع عند الاستلام · 🇩🇿 الجزائر",
@@ -281,63 +275,3 @@
       "faq.q6": "Do prices include delivery?", "faq.a6": "Product prices do not include delivery. The delivery fee is added based on your wilaya and shown clearly in the order summary before confirmation. Orders above a certain amount get free delivery.",
     },
   };
-
-  function getLang() {
-    try {
-      var l = localStorage.getItem(LANG_KEY);
-      if (l && META[l]) return l;
-    } catch (e) {}
-    return DEFAULT;
-  }
-
-  function t(key, lang) {
-    var l = lang || getLang();
-    var table = STR[l] || STR[DEFAULT];
-    if (table[key] != null) return table[key];
-    if (STR[DEFAULT][key] != null) return STR[DEFAULT][key];
-    return key;
-  }
-
-  function applyDir(lang) {
-    var m = META[lang] || META[DEFAULT];
-    document.documentElement.setAttribute("lang", m.htmlLang);
-    document.documentElement.setAttribute("dir", m.dir);
-  }
-
-  function apply(root) {
-    root = root || document;
-    var lang = getLang();
-    applyDir(lang);
-    root.querySelectorAll("[data-i18n]").forEach(function (el) {
-      el.textContent = t(el.getAttribute("data-i18n"), lang);
-    });
-    root.querySelectorAll("[data-i18n-html]").forEach(function (el) {
-      el.innerHTML = t(el.getAttribute("data-i18n-html"), lang);
-    });
-    root.querySelectorAll("[data-i18n-ph]").forEach(function (el) {
-      el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"), lang));
-    });
-    root.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
-      el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria"), lang));
-    });
-    // تحديث الأزرار في مبدّل اللغة
-    root.querySelectorAll("[data-lang-opt]").forEach(function (el) {
-      el.classList.toggle("active", el.getAttribute("data-lang-opt") === lang);
-    });
-    root.querySelectorAll("[data-lang-current]").forEach(function (el) {
-      el.textContent = (META[lang] || META[DEFAULT]).short;
-    });
-  }
-
-  function setLang(lang) {
-    if (!META[lang]) return;
-    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
-    apply(document);
-    document.dispatchEvent(new CustomEvent("langchange", { detail: { lang: lang } }));
-  }
-
-  // ضبط الاتجاه فوراً قبل رسم الصفحة لتفادي وميض الاتجاه
-  applyDir(getLang());
-
-  window.I18N = { t: t, getLang: getLang, setLang: setLang, apply: apply, META: META };
-})();

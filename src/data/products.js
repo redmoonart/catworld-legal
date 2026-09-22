@@ -13,7 +13,7 @@
    - stock: true متوفر / false نفذ
    ============================================================ */
 
-window.PRODUCTS = [
+export const PRODUCTS = [
   // ---------------- الألعاب ----------------
   { id: 101, category: "toys", emoji: "🚗", price: 3200, oldPrice: 4000, badge: "الأكثر مبيعاً", ageGroup: "3+", stock: true,
     name: "سيارة تحكم عن بعد", nameFr: "Voiture télécommandée", nameEn: "Remote control car",

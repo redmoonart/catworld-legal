@@ -5,7 +5,7 @@
    home = التوصيل للمنزل، office = التوصيل للمكتب (stopdesk)
    ============================================================ */
 
-window.WILAYAS = [
+export const WILAYAS = [
   { code: 1,  name: "أدرار",            latin: "Adrar",            home: 900, office: 500 },
   { code: 2,  name: "الشلف",            latin: "Chlef",            home: 700, office: 400 },
   { code: 3,  name: "الأغواط",          latin: "Laghouat",         home: 800, office: 450 },
