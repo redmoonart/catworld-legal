@@ -17,6 +17,7 @@
   var STR = {
     ar: {
       "tagline": "ألعاب الأطفال والأدوات المدرسية — توصيل لكل ولايات الجزائر",
+      "ribbon": "🚚 توصيل لكل 58 ولاية · 💵 الدفع عند الاستلام · 🇩🇿 الجزائر",
       // التنقل
       "nav.home": "الرئيسية", "nav.shop": "المتجر", "nav.toys": "الألعاب",
       "nav.school": "الأدوات المدرسية", "nav.about": "من نحن", "nav.contact": "اتصل بنا",
@@ -114,6 +115,7 @@
 
     fr: {
       "tagline": "Jouets et fournitures scolaires — livraison dans toutes les wilayas d'Algérie",
+      "ribbon": "🚚 Livraison dans les 58 wilayas · 💵 Paiement à la livraison · 🇩🇿 Algérie",
       "nav.home": "Accueil", "nav.shop": "Boutique", "nav.toys": "Jouets",
       "nav.school": "Fournitures scolaires", "nav.about": "À propos", "nav.contact": "Contact",
       "aria.cart": "Panier", "aria.menu": "Menu", "aria.wa": "WhatsApp", "aria.lang": "Langue",
@@ -197,6 +199,7 @@
 
     en: {
       "tagline": "Kids' toys and school supplies — delivery to all wilayas of Algeria",
+      "ribbon": "🚚 Delivery to all 58 wilayas · 💵 Cash on delivery · 🇩🇿 Algeria",
       "nav.home": "Home", "nav.shop": "Shop", "nav.toys": "Toys",
       "nav.school": "School Supplies", "nav.about": "About", "nav.contact": "Contact",
       "aria.cart": "Cart", "aria.menu": "Menu", "aria.wa": "WhatsApp", "aria.lang": "Language",
