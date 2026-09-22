@@ -454,10 +454,12 @@ select.select { border: 2px solid var(--line); border-radius: 999px; padding: 10
 .footer a:hover { color: #fff; }
 .footer .brand { color: #fff; }
 .footer .brand small { color: #a79fd0; }
-.footer .socials { display: flex; gap: 10px; margin-top: 12px; }
+.footer .socials { display: flex; gap: 10px; margin-top: 12px; perspective: 400px; }
 .footer .socials a { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,.1);
-  display: grid; place-items: center; font-size: 1.1rem; }
-.footer .socials a:hover { background: var(--primary); }
+  display: grid; place-items: center; font-size: 1.1rem;
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1), background .2s ease, box-shadow .25s ease; }
+.footer .socials a:hover { background: var(--primary); transform: translateY(-4px) rotateY(18deg) scale(1.08);
+  box-shadow: 0 10px 18px rgba(91,60,196,.4); }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,.1); margin-top: 30px; padding-top: 18px;
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: .85rem; }
 
@@ -490,8 +492,14 @@ select.select { border: 2px solid var(--line); border-radius: 999px; padding: 10
   gap: 12px; background: none; border: 0; padding: 4px 2px; font: inherit; font-weight: 700;
   color: inherit; text-align: start; border-radius: 8px;
 }
-.faq-item p { color: var(--muted); margin-top: 8px; display: none; }
-.faq-item.open p { display: block; }
+.faq-body {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows .38s cubic-bezier(.16,.84,.44,1);
+}
+.faq-body > p { overflow: hidden; min-height: 0; color: var(--muted); }
+.faq-item.open .faq-body { grid-template-rows: 1fr; }
+.faq-item.open .faq-body > p { margin-top: 8px; }
+@media (prefers-reduced-motion: reduce) { .faq-body { transition: none; } }
 .faq-item .tog { color: var(--primary); font-size: 1.4rem; transition: transform .2s; flex-shrink: 0; }
 .faq-item.open .tog { transform: rotate(45deg); }
 
@@ -806,3 +814,36 @@ select.select:focus-visible {
   box-shadow: 0 0 0 5px rgba(255,255,255,.55);
 }
 .cat-card:focus-visible { outline-color: #fff; }
+
+/* ============================================================
+   حركات ذات معنى إضافية (رجع فعل واضح لكل تفاعل)
+   ============================================================ */
+
+/* نبضة تأكيد عند الإضافة للسلة */
+.add-btn.added, #pdp-add.added { animation: addPulse .45s cubic-bezier(.34,1.56,.64,1); }
+@keyframes addPulse { 0% { transform: scale(1); } 40% { transform: scale(.92); } 75% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+/* نبضة على رقم الكمية عند التغيير */
+.qty input.bump { animation: qtyBump .3s ease; }
+@keyframes qtyBump { 0%,100% { transform: scale(1); color: inherit; } 50% { transform: scale(1.25); color: var(--primary); } }
+
+/* دخول متدرّج لصفوف السلة عند أول عرض للصفحة */
+.cart-row.row-enter { animation: rowIn .42s cubic-bezier(.16,.84,.44,1) both; }
+@keyframes rowIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.cart-row.row-enter:nth-of-type(1) { animation-delay: 0ms; }
+.cart-row.row-enter:nth-of-type(2) { animation-delay: 60ms; }
+.cart-row.row-enter:nth-of-type(3) { animation-delay: 120ms; }
+.cart-row.row-enter:nth-of-type(4) { animation-delay: 180ms; }
+.cart-row.row-enter:nth-of-type(5) { animation-delay: 240ms; }
+.cart-row.row-enter:nth-of-type(n+6) { animation-delay: 280ms; }
+
+/* وميض عند تحديث الإجمالي (تغيّر الولاية/نوع التوصيل) */
+.line.total.flash .amount-flash { animation: totalFlash .6s ease; border-radius: 6px; }
+@keyframes totalFlash {
+  0% { background: rgba(23,168,107,.35); }
+  100% { background: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .add-btn.added, #pdp-add.added, .qty input.bump, .cart-row.row-enter, .line.total.flash .amount-flash { animation: none !important; }
+}

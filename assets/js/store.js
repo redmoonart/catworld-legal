@@ -157,8 +157,22 @@
         </div>
       </article>`;
   }
+  function pulse(el) {
+    if (!el) return;
+    el.classList.remove("added");
+    void el.offsetWidth; // إعادة تشغيل الحركة
+    el.classList.add("added");
+    setTimeout(() => el.classList.remove("added"), 500);
+  }
+  function bump(el) {
+    if (!el) return;
+    el.classList.remove("bump");
+    void el.offsetWidth;
+    el.classList.add("bump");
+    setTimeout(() => el.classList.remove("bump"), 350);
+  }
   function bindAddButtons(ctx = document) {
-    $$(".add-btn", ctx).forEach((b) => b.addEventListener("click", () => addToCart(Number(b.dataset.id))));
+    $$(".add-btn", ctx).forEach((b) => b.addEventListener("click", () => { addToCart(Number(b.dataset.id)); pulse(b); }));
   }
 
   /* ============================================================
@@ -345,9 +359,9 @@
       if (!out) {
         const qi = $("#q-input");
         const getQ = () => Math.max(1, parseInt(qi.value, 10) || 1);
-        $("#q-minus").addEventListener("click", () => { qi.value = Math.max(1, getQ() - 1); qty = Number(qi.value); });
-        $("#q-plus").addEventListener("click", () => { qi.value = getQ() + 1; qty = Number(qi.value); });
-        $("#pdp-add").addEventListener("click", () => addToCart(p.id, getQ()));
+        $("#q-minus").addEventListener("click", () => { qi.value = Math.max(1, getQ() - 1); qty = Number(qi.value); bump(qi); });
+        $("#q-plus").addEventListener("click", () => { qi.value = getQ() + 1; qty = Number(qi.value); bump(qi); });
+        $("#pdp-add").addEventListener("click", () => { addToCart(p.id, getQ()); pulse($("#pdp-add")); });
         $("#pdp-buy").addEventListener("click", () => {
           addToCart(p.id, getQ());
           const msg = `${t("pdp.wa_msg")}\n• ${pName(p)} ×${getQ()} = ${money(p.price * getQ())}\n${CFG.name}`;
@@ -372,6 +386,7 @@
     if (!root) return;
 
     let deliveryType = "home";
+    let firstRender = true;
     const savedForm = {};
 
     function currentDelivery() {
@@ -410,7 +425,7 @@
               ${cart.map((i) => {
                 const p = byId(i.id); if (!p) return "";
                 return `
-                <div class="cart-row">
+                <div class="cart-row${firstRender ? " row-enter" : ""}">
                   <a href="product.html?id=${p.id}" class="thumb">${thumbHTML(p)}</a>
                   <div>
                     <h4>${esc(pName(p))}</h4>
@@ -434,7 +449,7 @@
             <h3>${t("cart.summary")}</h3>
             <div class="line"><span>${t("cart.subtotal")}</span><span>${money(sub)}</span></div>
             <div class="line"><span>${t("cart.delivery")} ${del.wilaya ? `(${wName(del.wilaya)})` : ""}</span><span>${isFree ? t("cart.free") : (del.wilaya ? money(delPrice) : t("cart.by_wilaya"))}</span></div>
-            <div class="line total"><span>${t("cart.total")}</span><span>${money(total)}</span></div>
+            <div class="line total${firstRender ? "" : " flash"}"><span>${t("cart.total")}</span><span class="amount-flash">${money(total)}</span></div>
             ${CFG.freeShippingThreshold && !isFree && remain > 0 ? `<div class="free-note">${t("cart.free_add_pre")}${money(remain)}${t("cart.free_add_post")}</div>` : ""}
             ${isFree ? `<div class="free-note">${t("cart.free_congrats")}</div>` : ""}
 
@@ -488,16 +503,20 @@
       if (savedForm.notes) $("#f-notes").value = savedForm.notes;
 
       bindCartEvents();
+      firstRender = false;
     }
 
     function bindCartEvents() {
       $$("[data-inc]").forEach((b) => b.addEventListener("click", () => {
         const id = Number(b.dataset.inc); const l = getCart().find((i) => i.id === id);
         setQty(id, (l ? l.qty : 0) + 1); render();
+        bump($(`[data-inc="${id}"]`) && $(`[data-inc="${id}"]`).parentElement.querySelector("input"));
       }));
       $$("[data-dec]").forEach((b) => b.addEventListener("click", () => {
         const id = Number(b.dataset.dec); const l = getCart().find((i) => i.id === id);
         setQty(id, (l ? l.qty : 1) - 1); render();
+        const btn = $(`[data-dec="${id}"]`);
+        if (btn) bump(btn.parentElement.querySelector("input"));
       }));
       $$("[data-rem]").forEach((b) => b.addEventListener("click", () => { removeFromCart(Number(b.dataset.rem)); render(); }));
       $$("[data-dtype]").forEach((c) => c.addEventListener("click", () => { deliveryType = c.dataset.dtype; stash(); render(); }));

@@ -24,7 +24,7 @@
 
   /* ---------- ظهور تدريجي عند التمرير ---------- */
   function setupReveal() {
-    var sel = ".section-head,.feature,.cat-card,.info-card,.cod-banner,.products-grid,.prose,.faq-item,.hero-trust,.summary,.cart-list,.pdp";
+    var sel = ".section-head,.feature,.cat-card,.info-card,.cod-banner,.products-grid,.prose,.faq-item,.hero-trust,.summary,.cart-list,.pdp,.page-head h1,.page-head p";
     var els = [].slice.call(document.querySelectorAll(sel));
     els.forEach(function (el, i) {
       el.classList.add("reveal");
