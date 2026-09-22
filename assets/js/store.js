@@ -66,9 +66,20 @@
   }
   function removeFromCart(id) { saveCart(getCart().filter((i) => i.id !== id)); }
 
+  let lastCartCount = null;
   function updateCartCount() {
     const c = cartCount();
-    $$(".cart-count").forEach((el) => { el.textContent = c; el.style.display = c > 0 ? "grid" : "none"; });
+    const changed = lastCartCount !== null && c !== lastCartCount;
+    lastCartCount = c;
+    $$(".cart-count").forEach((el) => {
+      el.textContent = c;
+      el.style.display = c > 0 ? "grid" : "none";
+      if (changed) {
+        el.classList.remove("bump");
+        void el.offsetWidth; // إعادة تشغيل الحركة
+        el.classList.add("bump");
+      }
+    });
   }
 
   /* ---------- توست ---------- */
@@ -166,7 +177,33 @@
 
     const toggle = $(".menu-toggle");
     const nav = $(".nav");
-    if (toggle && nav) toggle.addEventListener("click", () => nav.classList.toggle("open"));
+    const scrim = $(".nav-scrim");
+    function closeMobileNav() {
+      if (nav) nav.classList.remove("open");
+      if (scrim) scrim.classList.remove("open");
+      if (toggle) toggle.textContent = "☰";
+      document.body.style.overflow = "";
+    }
+    function toggleMobileNav() {
+      const opening = nav && !nav.classList.contains("open");
+      if (nav) nav.classList.toggle("open", !!opening);
+      if (scrim) scrim.classList.toggle("open", !!opening);
+      if (toggle) toggle.textContent = opening ? "✕" : "☰";
+      document.body.style.overflow = opening ? "hidden" : "";
+    }
+    if (toggle && nav) toggle.addEventListener("click", toggleMobileNav);
+    if (scrim) scrim.addEventListener("click", closeMobileNav);
+    if (nav) $$("a", nav).forEach((a) => a.addEventListener("click", closeMobileNav));
+    window.addEventListener("resize", () => { if (window.innerWidth > 760) closeMobileNav(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMobileNav(); });
+
+    // ظل الترويسة عند التمرير
+    const header = $(".header");
+    if (header) {
+      const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 8);
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
 
     // مبدّل اللغة
     $$(".lang-switch").forEach((sw) => {
