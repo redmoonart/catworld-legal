@@ -522,7 +522,10 @@ select.select { border: 2px solid var(--line); border-radius: 999px; padding: 10
 /* قناع خلفي عند فتح القائمة على الهاتف */
 .nav-scrim { display: none; }
 
-@media (max-width: 760px) {
+/* عتبة أوسع خاصة بالقائمة: عند 768px (iPad عمودي) لا يتسع شريط التنقّل
+   الكامل + الشعار + الإجراءات في صف واحد، فيتسبّب في تمرير أفقي — لذا
+   تتحوّل القائمة لقائمة همبرغر بدءاً من 880px بدل 760px. */
+@media (max-width: 880px) {
   .nav {
     display: none; position: fixed; top: var(--header-h); inset-inline: 0; z-index: 55;
     background: rgba(255,255,255,.98); backdrop-filter: blur(20px);
@@ -540,6 +543,8 @@ select.select { border: 2px solid var(--line); border-radius: 999px; padding: 10
   }
   .nav-scrim.open { display: block; opacity: 1; pointer-events: auto; }
   .menu-toggle { display: grid; }
+}
+@media (max-width: 760px) {
   .hero h1 { font-size: 2rem; }
   .features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cats { grid-template-columns: minmax(0, 1fr); }
