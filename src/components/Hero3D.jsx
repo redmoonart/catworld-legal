@@ -1,8 +1,17 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { useI18n } from "../i18n/I18nContext";
+import { useI18n, Trans } from "../i18n/I18nContext";
 import heroImg from "../assets/hero.png";
+
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 26 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 260, damping: 22 } },
+};
 
 export default function Hero3D() {
   const { t } = useI18n();
@@ -12,14 +21,14 @@ export default function Hero3D() {
   const stx = useSpring(tx, { stiffness: 120, damping: 20 });
   const sty = useSpring(ty, { stiffness: 120, damping: 20 });
 
-  const rotateX = useTransform(sty, (v) => -v * 7);
-  const rotateY = useTransform(stx, (v) => v * 10);
-  const fxX = useTransform(stx, (v) => v * 22);
-  const fxY = useTransform(sty, (v) => v * 16);
-  const glowX = useTransform(stx, (v) => v * -18);
-  const glowY = useTransform(sty, (v) => v * -10);
-  const orbitX = useTransform(stx, (v) => v * 26);
-  const orbitY = useTransform(sty, (v) => v * 18);
+  const rotateX = useTransform(sty, (v) => -v * 6);
+  const rotateY = useTransform(stx, (v) => v * 9);
+  const fxX = useTransform(stx, (v) => v * 20);
+  const fxY = useTransform(sty, (v) => v * 14);
+  const glowX = useTransform(stx, (v) => v * -16);
+  const glowY = useTransform(sty, (v) => v * -9);
+  const orbitX = useTransform(stx, (v) => v * 24);
+  const orbitY = useTransform(sty, (v) => v * 16);
 
   function handleMove(e) {
     const r = ref.current.getBoundingClientRect();
@@ -34,53 +43,80 @@ export default function Hero3D() {
   return (
     <section className="hero-cine">
       <div className="hero-ribbon">{t("ribbon")}</div>
-      <div className="wrap" style={{ paddingTop: 18, paddingBottom: 28 }}>
-        <div className="hero3d" ref={ref} onPointerMove={handleMove} onPointerLeave={handleLeave}>
-          <div className="hero-stage">
-            <motion.div className="hero-scene" style={{ rotateX, rotateY, transformPerspective: 1200 }}>
-              <motion.div className="hero-glow" style={{ x: glowX, y: glowY, scale: 1.1 }} />
-              <img
-                className="hero-key-img"
-                src={heroImg}
-                alt="Kids of the Future"
-                fetchPriority="high"
-                width="1672"
-                height="941"
-              />
-              <motion.div className="hero-fx" style={{ x: fxX, y: fxY }}>
-                <span className="spark" />
-                <span className="spark" />
-                <span className="spark" />
-                <span className="spark" />
-                <span className="spark" />
-                <span className="spark" />
-                <span className="spark" />
-                <span className="spark" />
-                <span className="floaty-emoji e1">⭐</span>
-                <span className="floaty-emoji e2">✨</span>
-                <span className="floaty-emoji e3">🚀</span>
-              </motion.div>
+      <div className="wrap">
+        <motion.div className="hero-split" variants={container} initial="hidden" animate="show">
+          <div className="hero-copy">
+            <motion.h1 variants={item}>
+              <Trans k="hero.title" />
+            </motion.h1>
+            <motion.p className="lead" variants={item}>{t("hero.lead")}</motion.p>
+            <motion.div className="hero-cta" variants={item}>
+              <Link to="/shop" className="btn btn-accent btn-lg glow">{t("hero.cta_shop")}</Link>
+              <Link to="/shop?cat=school" className="btn btn-ghost btn-lg">{t("hero.cta_school")}</Link>
             </motion.div>
-            <motion.div className="hero-orbit" style={{ x: orbitX, y: orbitY }} aria-hidden="true">
-              <span className="orb o1">🚗</span>
-              <span className="orb o2">🎨</span>
-              <span className="orb o3">🧩</span>
-              <span className="orb o4">🎒</span>
+            <motion.div className="hero-trust" variants={item}>
+              <span>🚚 <span>{t("hero.badge_delivery")}</span></span>
+              <span>💵 <span>{t("hero.badge_cod")}</span></span>
+              <span>✅ <span>{t("hero.badge_guarantee")}</span></span>
             </motion.div>
-            <div className="hero-scrim">
-              <p className="tagline-cine">{t("hero.lead")}</p>
-              <div className="hero-cta">
-                <Link to="/shop" className="btn btn-accent btn-lg glow">{t("hero.cta_shop")}</Link>
-                <Link to="/shop?cat=school" className="btn btn-glass btn-lg">{t("hero.cta_school")}</Link>
-              </div>
-              <div className="hero-trust">
-                <span>🚚 <span>{t("hero.badge_delivery")}</span></span>
-                <span>💵 <span>{t("hero.badge_cod")}</span></span>
-                <span>✅ <span>{t("hero.badge_guarantee")}</span></span>
-              </div>
-            </div>
           </div>
-        </div>
+
+          <motion.div
+            className="hero-visual hero3d"
+            variants={item}
+            ref={ref}
+            onPointerMove={handleMove}
+            onPointerLeave={handleLeave}
+          >
+            <motion.div
+              className="hero-float"
+              animate={{ y: [0, -14, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <div className="hero-stage">
+                <motion.div className="hero-scene" style={{ rotateX, rotateY, transformPerspective: 1200 }}>
+                  <motion.div className="hero-glow" style={{ x: glowX, y: glowY, scale: 1.1 }} />
+                  <img
+                    className="hero-key-img"
+                    src={heroImg}
+                    alt="Kids of the Future"
+                    fetchPriority="high"
+                    width="1672"
+                    height="941"
+                  />
+                  <motion.div className="hero-fx" style={{ x: fxX, y: fxY }}>
+                    <span className="spark" />
+                    <span className="spark" />
+                    <span className="spark" />
+                    <span className="spark" />
+                    <span className="spark" />
+                    <span className="spark" />
+                    <span className="spark" />
+                    <span className="spark" />
+                    <span className="floaty-emoji e1">⭐</span>
+                    <span className="floaty-emoji e2">✨</span>
+                    <span className="floaty-emoji e3">🚀</span>
+                  </motion.div>
+                </motion.div>
+                <motion.div className="hero-orbit" style={{ x: orbitX, y: orbitY }} aria-hidden="true">
+                  <span className="orb o1">🚗</span>
+                  <span className="orb o2">🎨</span>
+                  <span className="orb o3">🧩</span>
+                  <span className="orb o4">🎒</span>
+                </motion.div>
+              </div>
+            </motion.div>
+            <motion.div
+              className="hero-chip"
+              initial={{ opacity: 0, scale: 0.7, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.9 }}
+            >
+              <span className="hero-chip-ic">✅</span>
+              <span>{t("hero.badge_guarantee")}</span>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
