@@ -48,7 +48,7 @@
 
   /* ---------- إمالة ثلاثية الأبعاد تتبع المؤشر ---------- */
   function setupTilt() {
-    var sel = ".pcard,.cat-card,.feature,.info-card";
+    var sel = ".pcard,.cat-card,.feature,.info-card,.gallery";
     var current = null;
 
     // حقن طبقة اللمعان في البطاقات الثابتة (المنتجات تحملها من القالب)

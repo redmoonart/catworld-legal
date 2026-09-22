@@ -267,14 +267,20 @@
       root.innerHTML = `
         <p class="breadcrumb"><a href="index.html">${t("nav.home")}</a> / <a href="shop.html?cat=${p.category}">${catLabel(p.category)}</a> / ${esc(pName(p))}</p>
         <div class="pdp">
-          <div class="gallery">${thumbHTML(p)}</div>
+          <div class="product-stage">
+            <div class="stage-glow"></div>
+            <div class="gallery">
+              <span class="tilt-shine"></span>
+              ${thumbHTML(p)}
+              ${disc > 0 && !out ? `<span class="disc">-${disc}%</span>` : ""}
+            </div>
+          </div>
           <div class="info">
             <span class="cat-tag" style="color:var(--primary);font-weight:700">${catLabel(p.category)}</span>
             <h1>${esc(pName(p))}</h1>
             <div class="price">
               <span class="now">${money(p.price)}</span>
               ${p.oldPrice ? `<span class="old">${money(p.oldPrice)}</span>` : ""}
-              ${disc > 0 ? `<span style="background:var(--danger);color:#fff;padding:2px 10px;border-radius:999px;font-weight:700;font-size:.85rem">-${disc}%</span>` : ""}
             </div>
             <p class="desc">${esc(pDesc(p))}</p>
             <div class="meta">
