@@ -124,6 +124,7 @@
     const out = p.stock === false;
     return `
       <article class="pcard">
+        <span class="tilt-shine"></span>
         <a href="product.html?id=${p.id}" class="thumb">
           ${thumbHTML(p)}
           ${p.badge && !out ? `<span class="badge">${esc(p.badge)}</span>` : ""}
