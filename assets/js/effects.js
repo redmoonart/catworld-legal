@@ -95,28 +95,33 @@
     });
   }
 
-  /* ---------- بارالاكس للهيرو ---------- */
+  /* ---------- ديوراما ثلاثية الأبعاد للهيرو ---------- */
   function setupHeroParallax() {
-    var stage = document.querySelector(".hero-cine");
-    if (!stage) return;
-    var img = stage.querySelector(".hero-key-img");
-    var fx = stage.querySelector(".hero-fx");
+    var root = document.querySelector(".hero3d");
+    if (!root) return;
+    var scene = root.querySelector(".hero-scene");
+    var fx = root.querySelector(".hero-fx");
+    var glow = root.querySelector(".hero-glow");
+    var orbit = root.querySelector(".hero-orbit");
     var raf = null, tx = 0, ty = 0;
 
-    stage.addEventListener("pointermove", function (e) {
-      var r = stage.getBoundingClientRect();
+    root.addEventListener("pointermove", function (e) {
+      var r = root.getBoundingClientRect();
       tx = (e.clientX - r.left) / r.width - 0.5;
       ty = (e.clientY - r.top) / r.height - 0.5;
       if (!raf) raf = requestAnimationFrame(apply);
     });
-    stage.addEventListener("pointerleave", function () {
+    root.addEventListener("pointerleave", function () {
       tx = 0; ty = 0;
       if (!raf) raf = requestAnimationFrame(apply);
     });
     function apply() {
       raf = null;
-      if (img) img.style.transform = "scale(1.05) translate(" + (tx * -12) + "px," + (ty * -9) + "px)";
-      if (fx) fx.style.transform = "translate(" + (tx * 18) + "px," + (ty * 14) + "px)";
+      if (scene) scene.style.transform =
+        "rotateX(" + (-ty * 7).toFixed(2) + "deg) rotateY(" + (tx * 10).toFixed(2) + "deg)";
+      if (fx) fx.style.transform = "translateZ(70px) translate(" + (tx * 22) + "px," + (ty * 16) + "px)";
+      if (glow) glow.style.transform = "translateZ(-60px) scale(1.1) translate(" + (tx * -18) + "px," + (ty * -10) + "px)";
+      if (orbit) orbit.style.transform = "translate(" + (tx * 26) + "px," + (ty * 18) + "px)";
     }
   }
 })();
