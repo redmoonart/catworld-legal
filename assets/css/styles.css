@@ -115,6 +115,19 @@ ul { list-style: none; }
 .menu-toggle { display: none; background: var(--primary-light); color: var(--primary);
   width: 44px; height: 44px; border-radius: 12px; border: 0; font-size: 1.3rem; cursor: pointer; }
 
+/* مبدّل اللغة */
+.lang-switch { position: relative; }
+.lang-btn { background: var(--primary-light); color: var(--primary); height: 44px; padding: 0 12px;
+  border-radius: 12px; border: 0; font-family: inherit; font-weight: 700; font-size: .9rem; cursor: pointer;
+  display: flex; align-items: center; gap: 6px; }
+.lang-menu { position: absolute; top: 50px; inset-inline-end: 0; background: #fff; border: 1px solid var(--line);
+  border-radius: 12px; box-shadow: var(--shadow-lg); padding: 6px; min-width: 140px; display: none; z-index: 60; }
+.lang-switch.open .lang-menu { display: block; }
+.lang-menu button { display: block; width: 100%; text-align: start; background: none; border: 0; cursor: pointer;
+  font-family: inherit; font-size: .92rem; font-weight: 600; padding: 9px 12px; border-radius: 8px; color: var(--ink); }
+.lang-menu button:hover { background: var(--primary-light); color: var(--primary); }
+.lang-menu button.active { background: var(--primary); color: #fff; }
+
 /* ---------- الهيرو ---------- */
 .hero {
   background:

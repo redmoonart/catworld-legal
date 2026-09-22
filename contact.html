@@ -15,24 +15,32 @@
 
   <header class="header">
     <div class="wrap header-inner">
-      <a href="index.html" class="brand"><span class="logo">🧸</span><span>Kids of the Future<small data-tagline></small></span></a>
+      <a href="index.html" class="brand"><span class="logo">🧸</span><span>Kids of the Future<small data-tagline data-i18n="tagline"></small></span></a>
       <nav class="nav">
-        <a href="index.html">الرئيسية</a>
-        <a href="shop.html">المتجر</a>
-        <a href="shop.html?cat=toys">الألعاب</a>
-        <a href="shop.html?cat=school">الأدوات المدرسية</a>
-        <a href="about.html">من نحن</a>
-        <a href="contact.html" class="active">اتصل بنا</a>
+        <a href="index.html" data-i18n="nav.home">الرئيسية</a>
+        <a href="shop.html" data-i18n="nav.shop">المتجر</a>
+        <a href="shop.html?cat=toys" data-i18n="nav.toys">الألعاب</a>
+        <a href="shop.html?cat=school" data-i18n="nav.school">الأدوات المدرسية</a>
+        <a href="about.html" data-i18n="nav.about">من نحن</a>
+        <a href="contact.html" class="active" data-i18n="nav.contact">اتصل بنا</a>
       </nav>
       <div class="header-actions">
-        <a href="cart.html" class="cart-btn" aria-label="السلة">🛒<span class="count cart-count">0</span></a>
-        <button class="menu-toggle" aria-label="القائمة">☰</button>
+        <div class="lang-switch">
+          <button class="lang-btn" data-i18n-aria="aria.lang" aria-label="اللغة">🌐 <span data-lang-current>ع</span></button>
+          <div class="lang-menu">
+            <button data-lang-opt="ar">العربية</button>
+            <button data-lang-opt="fr">Français</button>
+            <button data-lang-opt="en">English</button>
+          </div>
+        </div>
+        <a href="cart.html" class="cart-btn" data-i18n-aria="aria.cart" aria-label="السلة">🛒<span class="count cart-count">0</span></a>
+        <button class="menu-toggle" data-i18n-aria="aria.menu" aria-label="القائمة">☰</button>
       </div>
     </div>
   </header>
 
   <section class="page-head">
-    <div class="wrap"><h1>اتصل بنا</h1><p>نحن هنا لمساعدتك — تواصل معنا في أي وقت</p></div>
+    <div class="wrap"><h1 data-i18n="contact.head_t">اتصل بنا</h1><p data-i18n="contact.head_s">نحن هنا لمساعدتك — تواصل معنا في أي وقت</p></div>
   </section>
 
   <section class="section">
@@ -40,57 +48,57 @@
       <div class="info-grid">
         <div class="info-card">
           <div class="ic">📱</div>
-          <h3>واتساب</h3>
-          <p style="color:var(--muted);margin:6px 0 14px">أسرع وسيلة للطلب والاستفسار. راسلنا مباشرة.</p>
-          <a class="btn btn-wa" data-wa-link href="#">تواصل عبر واتساب</a>
+          <h3 data-i18n="contact.wa_t">واتساب</h3>
+          <p style="color:var(--muted);margin:6px 0 14px" data-i18n="contact.wa_d">أسرع وسيلة للطلب والاستفسار.</p>
+          <a class="btn btn-wa" data-wa-link href="#" data-i18n="contact.wa_btn">تواصل عبر واتساب</a>
         </div>
         <div class="info-card">
           <div class="ic">✉️</div>
-          <h3>البريد الإلكتروني</h3>
-          <p style="color:var(--muted);margin:6px 0 14px">للاستفسارات والاقتراحات وطلبات الجملة.</p>
-          <a class="btn btn-ghost" data-email href="#">راسلنا</a>
+          <h3 data-i18n="contact.email_t">البريد الإلكتروني</h3>
+          <p style="color:var(--muted);margin:6px 0 14px" data-i18n="contact.email_d">للاستفسارات والاقتراحات.</p>
+          <a class="btn btn-ghost" data-email href="#" data-i18n="contact.email_btn">راسلنا</a>
         </div>
         <div class="info-card">
           <div class="ic">📞</div>
-          <h3>الهاتف</h3>
-          <p style="color:var(--muted);margin:6px 0 14px">اتصل بنا من السبت إلى الخميس، 9ص - 6م.</p>
+          <h3 data-i18n="contact.phone_t">الهاتف</h3>
+          <p style="color:var(--muted);margin:6px 0 14px" data-i18n="contact.phone_d">اتصل بنا من السبت إلى الخميس.</p>
           <p style="font-weight:800;font-size:1.2rem;color:var(--primary)" data-phone></p>
         </div>
         <div class="info-card">
           <div class="ic">📍</div>
-          <h3>العنوان</h3>
-          <p style="color:var(--muted);margin:6px 0 14px">نخدم كل ولايات الجزائر عبر التوصيل.</p>
-          <p style="font-weight:700">الجزائر 🇩🇿</p>
+          <h3 data-i18n="contact.addr_t">العنوان</h3>
+          <p style="color:var(--muted);margin:6px 0 14px" data-i18n="contact.addr_d">نخدم كل ولايات الجزائر عبر التوصيل.</p>
+          <p style="font-weight:700" data-i18n="contact.addr_v">الجزائر 🇩🇿</p>
         </div>
       </div>
 
       <div class="section-sm"></div>
 
       <div id="faq" class="prose">
-        <h2 style="margin-top:0">❓ الأسئلة الشائعة</h2>
+        <h2 style="margin-top:0" data-i18n="contact.faq_t">❓ الأسئلة الشائعة</h2>
         <div class="faq-item open">
-          <h4>كيف أطلب من الموقع؟ <span class="tog">+</span></h4>
-          <p>اختر منتجاتك وأضِفها إلى السلة، ثم اذهب إلى صفحة السلة واملأ اسمك ورقم هاتفك وولايتك، ثم اضغط "تأكيد الطلب عبر واتساب". ستُفتح محادثة واتساب بكل تفاصيل طلبك جاهزة للإرسال.</p>
+          <h4><span data-i18n="faq.q1">كيف أطلب من الموقع؟</span> <span class="tog">+</span></h4>
+          <p data-i18n-html="faq.a1"></p>
         </div>
         <div class="faq-item">
-          <h4>ما هي طريقة الدفع؟ <span class="tog">+</span></h4>
-          <p>الدفع يكون <strong>عند الاستلام</strong> (Cash on Delivery) في كل الجزائر. تدفع نقداً لعامل التوصيل بعد استلام طلبك ومعاينته. لا حاجة لأي بطاقة بنكية.</p>
+          <h4><span data-i18n="faq.q2">ما هي طريقة الدفع؟</span> <span class="tog">+</span></h4>
+          <p data-i18n-html="faq.a2"></p>
         </div>
         <div class="faq-item">
-          <h4>هل تُوصّلون إلى كل الولايات؟ <span class="tog">+</span></h4>
-          <p>نعم، نوصّل إلى جميع ولايات الجزائر الـ58. يختلف سعر التوصيل حسب الولاية ونوع التوصيل (إلى المنزل أو إلى مكتب التوصيل)، ويظهر السعر تلقائياً عند اختيار ولايتك في صفحة السلة.</p>
+          <h4><span data-i18n="faq.q3">هل تُوصّلون إلى كل الولايات؟</span> <span class="tog">+</span></h4>
+          <p data-i18n-html="faq.a3"></p>
         </div>
         <div class="faq-item">
-          <h4>كم تستغرق مدة التوصيل؟ <span class="tog">+</span></h4>
-          <p>عادة من 2 إلى 5 أيام عمل حسب الولاية وشركة التوصيل. نتواصل معك عبر واتساب لتأكيد الطلب وموعد التسليم التقريبي.</p>
+          <h4><span data-i18n="faq.q4">كم تستغرق مدة التوصيل؟</span> <span class="tog">+</span></h4>
+          <p data-i18n-html="faq.a4"></p>
         </div>
         <div class="faq-item">
-          <h4>هل يمكنني إرجاع أو استبدال منتج؟ <span class="tog">+</span></h4>
-          <p>نعم، يمكنك طلب الاستبدال خلال 48 ساعة من الاستلام في حال وجود عيب في المنتج، بشرط أن يكون بحالته الأصلية. تواصل معنا عبر واتساب لترتيب ذلك.</p>
+          <h4><span data-i18n="faq.q5">هل يمكنني إرجاع أو استبدال منتج؟</span> <span class="tog">+</span></h4>
+          <p data-i18n-html="faq.a5"></p>
         </div>
         <div class="faq-item">
-          <h4>هل الأسعار تشمل التوصيل؟ <span class="tog">+</span></h4>
-          <p>أسعار المنتجات لا تشمل التوصيل. يُضاف سعر التوصيل حسب ولايتك، ويظهر بوضوح في ملخص الطلب قبل التأكيد. الطلبات فوق حدّ معيّن تحصل على توصيل مجاني.</p>
+          <h4><span data-i18n="faq.q6">هل الأسعار تشمل التوصيل؟</span> <span class="tog">+</span></h4>
+          <p data-i18n-html="faq.a6"></p>
         </div>
       </div>
     </div>
@@ -101,43 +109,44 @@
       <div class="footer-grid">
         <div>
           <div class="brand"><span class="logo">🧸</span><span>Kids of the Future</span></div>
-          <p style="margin-top:12px;font-size:.9rem">متجرك الأول لألعاب الأطفال والأدوات المدرسية في الجزائر.</p>
+          <p style="margin-top:12px;font-size:.9rem" data-i18n="footer.about">متجرك الأول لألعاب الأطفال والأدوات المدرسية في الجزائر.</p>
           <div class="socials">
-            <a data-social="facebook" href="#">f</a>
-            <a data-social="instagram" href="#">📷</a>
-            <a data-social="tiktok" href="#">♪</a>
+            <a data-social="facebook" href="#" aria-label="facebook">f</a>
+            <a data-social="instagram" href="#" aria-label="instagram">📷</a>
+            <a data-social="tiktok" href="#" aria-label="tiktok">♪</a>
           </div>
         </div>
         <div>
-          <h4>روابط سريعة</h4>
-          <a href="shop.html">المتجر</a>
-          <a href="shop.html?cat=toys">الألعاب</a>
-          <a href="shop.html?cat=school">الأدوات المدرسية</a>
-          <a href="cart.html">السلة</a>
+          <h4 data-i18n="footer.quicklinks">روابط سريعة</h4>
+          <a href="shop.html" data-i18n="nav.shop">المتجر</a>
+          <a href="shop.html?cat=toys" data-i18n="nav.toys">الألعاب</a>
+          <a href="shop.html?cat=school" data-i18n="nav.school">الأدوات المدرسية</a>
+          <a href="cart.html" data-i18n="footer.cart">السلة</a>
         </div>
         <div>
-          <h4>المتجر</h4>
-          <a href="about.html">من نحن</a>
-          <a href="contact.html">اتصل بنا</a>
-          <a href="contact.html#faq">الأسئلة الشائعة</a>
-          <a href="privacy-policy.html">سياسة الخصوصية</a>
+          <h4 data-i18n="footer.store">المتجر</h4>
+          <a href="about.html" data-i18n="nav.about">من نحن</a>
+          <a href="contact.html" data-i18n="nav.contact">اتصل بنا</a>
+          <a href="contact.html#faq" data-i18n="footer.faq">الأسئلة الشائعة</a>
+          <a href="privacy-policy.html" data-i18n="footer.privacy">سياسة الخصوصية</a>
         </div>
         <div>
-          <h4>تواصل معنا</h4>
-          <a data-wa-link href="#">📱 واتساب</a>
-          <a data-email href="#">✉️ البريد الإلكتروني</a>
+          <h4 data-i18n="footer.contact_us">تواصل معنا</h4>
+          <a data-wa-link href="#" data-i18n="footer.wa">📱 واتساب</a>
+          <a data-email href="#" data-i18n="footer.email">✉️ البريد الإلكتروني</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© <span data-year></span> Kids of the Future — جميع الحقوق محفوظة</span>
-        <span>صُنع بحب للأطفال في الجزائر 🇩🇿</span>
+        <span>© <span data-year></span> Kids of the Future — <span data-i18n="footer.rights">جميع الحقوق محفوظة</span></span>
+        <span data-i18n="footer.madewith">صُنع بحب للأطفال في الجزائر 🇩🇿</span>
       </div>
     </div>
   </footer>
 
-  <a class="wa-float" data-wa-link href="#" aria-label="واتساب">📱</a>
+  <a class="wa-float" data-wa-link href="#" data-i18n-aria="aria.wa" aria-label="واتساب">📱</a>
 
   <script src="assets/js/config.js"></script>
+  <script src="assets/js/i18n.js"></script>
   <script src="assets/js/wilayas.js"></script>
   <script src="assets/js/products.js"></script>
   <script src="assets/js/store.js"></script>

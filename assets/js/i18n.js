@@ -1,0 +1,340 @@
+/* ============================================================
+   نظام تعدّد اللغات — Kids of the Future
+   العربية (أساسية / RTL) + الفرنسية + الإنجليزية
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var LANG_KEY = "kof_lang";
+  var DEFAULT = "ar";
+
+  var META = {
+    ar: { label: "العربية", short: "ع", dir: "rtl", htmlLang: "ar" },
+    fr: { label: "Français", short: "FR", dir: "ltr", htmlLang: "fr" },
+    en: { label: "English", short: "EN", dir: "ltr", htmlLang: "en" },
+  };
+
+  var STR = {
+    ar: {
+      "tagline": "ألعاب الأطفال والأدوات المدرسية — توصيل لكل ولايات الجزائر",
+      // التنقل
+      "nav.home": "الرئيسية", "nav.shop": "المتجر", "nav.toys": "الألعاب",
+      "nav.school": "الأدوات المدرسية", "nav.about": "من نحن", "nav.contact": "اتصل بنا",
+      "aria.cart": "السلة", "aria.menu": "القائمة", "aria.wa": "واتساب", "aria.lang": "اللغة",
+      // الهيرو
+      "hero.title": 'عالم <span class="hl">الألعاب</span> والأدوات المدرسية<br>بين يديك في الجزائر',
+      "hero.lead": "تشكيلة مختارة من ألعاب الأطفال والمستلزمات المدرسية بجودة عالية وأسعار في المتناول. اطلب الآن وادفع عند الاستلام أينما كنت في الوطن.",
+      "hero.cta_shop": "🛍️ تسوّق الآن", "hero.cta_school": "🎒 الأدوات المدرسية",
+      "hero.badge_delivery": "توصيل لكل 58 ولاية", "hero.badge_cod": "الدفع عند الاستلام", "hero.badge_guarantee": "منتجات مضمونة",
+      "hero.float_toys": "ألعاب", "hero.float_school": "مدرسة", "hero.float_smart": "ذكاء",
+      // المزايا
+      "feat.delivery_t": "توصيل سريع", "feat.delivery_d": "إلى جميع ولايات الجزائر",
+      "feat.cod_t": "الدفع عند الاستلام", "feat.cod_d": "ادفع بعد أن تستلم طلبك",
+      "feat.exchange_t": "استبدال سهل", "feat.exchange_d": "خلال 48 ساعة من الاستلام",
+      "feat.support_t": "دعم عبر واتساب", "feat.support_d": "نجيب على استفساراتك بسرعة",
+      // الفئات
+      "cats.kicker": "تسوّق حسب الفئة", "cats.title": "ماذا تبحث عنه اليوم؟", "cats.sub": "اختر الفئة المناسبة وابدأ التسوّق",
+      "cats.toys_t": "ألعاب الأطفال", "cats.toys_d": "سيارات، دمى، مكعبات، ألعاب تعليمية وأكثر", "cats.toys_go": "تصفّح الألعاب ←",
+      "cats.school_t": "الأدوات المدرسية", "cats.school_d": "محافظ، أقلام، كراريس، أدوات هندسة وفنون", "cats.school_go": "تصفّح الأدوات ←",
+      // منتجات مختارة
+      "picks.kicker": "الأكثر رواجاً", "picks.title": "منتجات مختارة لك", "picks.sub": "عروض وأحدث الإضافات", "picks.viewall": "عرض كل المنتجات",
+      // شريط الدفع
+      "cod.title": "الدفع عند الاستلام في كل الجزائر", "cod.text": "لا حاجة لبطاقة بنكية — عايِن طلبك ثم ادفع نقداً لعامل التوصيل.", "cod.btn": "اطلب الآن",
+      // الفوتر
+      "footer.about": "متجرك الأول لألعاب الأطفال والأدوات المدرسية في الجزائر. جودة نثق بها وأسعار في المتناول.",
+      "footer.quicklinks": "روابط سريعة", "footer.store": "المتجر", "footer.contact_us": "تواصل معنا",
+      "footer.cart": "السلة", "footer.faq": "الأسئلة الشائعة", "footer.privacy": "سياسة الخصوصية",
+      "footer.wa": "📱 واتساب", "footer.email": "✉️ البريد الإلكتروني",
+      "footer.hours": "🕐 من السبت إلى الخميس، 9ص - 6م",
+      "footer.rights": "جميع الحقوق محفوظة", "footer.madewith": "صُنع بحب للأطفال في الجزائر 🇩🇿",
+      // صفحة المتجر
+      "shop.head_title": "متجر Kids of the Future", "shop.head_sub": "ألعاب وأدوات مدرسية مختارة — توصيل لكل الجزائر والدفع عند الاستلام",
+      "shop.chip_all": "الكل", "shop.chip_toys": "🧸 ألعاب", "shop.chip_school": "🎒 أدوات مدرسية",
+      "shop.sort_default": "الترتيب الافتراضي", "shop.sort_price_asc": "السعر: من الأقل للأعلى", "shop.sort_price_desc": "السعر: من الأعلى للأقل", "shop.sort_name": "الاسم (أ - ي)",
+      "shop.search_ph": "ابحث عن منتج...", "shop.count_unit": "منتج",
+      "shop.no_results_t": "لا توجد نتائج", "shop.no_results_p": "جرّب كلمة بحث أخرى أو غيّر الفئة.",
+      // بطاقة المنتج
+      "card.add": "🛒 أضف للسلة", "card.unavailable": "غير متوفر", "card.out": "نفذ المخزون", "card.toys": "ألعاب", "card.school": "أدوات مدرسية",
+      // تفاصيل المنتج
+      "pdp.age": "👶 العمر: {v} سنوات", "pdp.cod_tag": "💵 الدفع عند الاستلام", "pdp.delivery_tag": "🚚 توصيل لكل الولايات",
+      "pdp.in_stock": "✔ متوفر في المخزون", "pdp.out_stock": "✖ نفذ المخزون حالياً",
+      "pdp.add": "🛒 أضف إلى السلة", "pdp.buy": "اطلب عبر واتساب", "pdp.related": "منتجات مشابهة",
+      "pdp.notfound_t": "المنتج غير موجود", "pdp.notfound_p": "ربما تم حذفه أو تغيّر الرابط.", "pdp.notfound_btn": "تصفّح المتجر",
+      "pdp.wa_msg": "مرحباً، أرغب في طلب هذا المنتج:",
+      // السلة
+      "cart.head_title": "🛒 سلة التسوّق", "cart.head_sub": "راجع طلبك وأكمل بياناتك — الدفع عند الاستلام",
+      "cart.empty_t": "سلتك فارغة", "cart.empty_p": "لم تُضِف أي منتج بعد. اكتشف تشكيلتنا من الألعاب والأدوات المدرسية.", "cart.empty_btn": "ابدأ التسوّق",
+      "cart.per_piece": "للقطعة", "cart.remove": "🗑 حذف",
+      "cart.summary": "ملخص الطلب", "cart.subtotal": "المجموع الفرعي", "cart.delivery": "التوصيل", "cart.total": "الإجمالي",
+      "cart.by_wilaya": "يُحتسب حسب الولاية", "cart.free": "مجاني 🎉", "cart.free_congrats": "🎉 تهانينا! حصلت على توصيل مجاني",
+      "cart.free_add_pre": "أضِف بقيمة ", "cart.free_add_post": " للحصول على توصيل مجاني 🚚",
+      "cart.info_title": "معلومات التوصيل",
+      "cart.f_name": "الاسم الكامل", "cart.f_phone": "رقم الهاتف", "cart.f_wilaya": "الولاية", "cart.f_city": "البلدية / العنوان", "cart.f_notes": "ملاحظات (اختياري)",
+      "cart.ph_name": "مثال: أحمد بن علي", "cart.ph_phone": "0X XX XX XX XX", "cart.ph_city": "البلدية أو العنوان التفصيلي", "cart.ph_notes": "أي تفاصيل إضافية حول الطلب",
+      "cart.choose_wilaya": "— اختر الولاية —", "cart.dtype": "نوع التوصيل", "cart.dtype_home": "🏠 إلى المنزل", "cart.dtype_office": "🏢 مكتب التوصيل",
+      "cart.submit": "📲 تأكيد الطلب عبر واتساب", "cart.cod_note": "💵 الدفع عند الاستلام — لا حاجة لبطاقة بنكية",
+      "cart.err_name": "يرجى إدخال الاسم", "cart.err_phone": "أدخل رقم هاتف صحيح (10 أرقام)", "cart.err_wilaya": "يرجى اختيار الولاية",
+      // رسالة واتساب
+      "wa.new_order": "🛒 *طلب جديد من {store}*", "wa.subtotal": "المجموع الفرعي", "wa.delivery": "التوصيل",
+      "wa.home": "منزل", "wa.office": "مكتب", "wa.total": "الإجمالي", "wa.name": "الاسم", "wa.phone": "الهاتف",
+      "wa.wilaya": "الولاية", "wa.address": "البلدية/العنوان", "wa.dtype": "نوع التوصيل", "wa.dtype_home": "المنزل", "wa.dtype_office": "مكتب التوصيل",
+      "wa.notes": "ملاحظات", "wa.payment": "الدفع", "wa.cod": "عند الاستلام", "wa.generic": "مرحباً، أرغب في الاستفسار عن منتجات {store} 🧸",
+      // صفحة من نحن
+      "about.head_t": "من نحن", "about.head_s": "قصتنا ورسالتنا تجاه أطفال الجزائر",
+      "about.p1": "<strong>Kids of the Future</strong> هو متجر إلكتروني جزائري متخصص في بيع ألعاب الأطفال والأدوات المدرسية. انطلقنا من فكرة بسيطة: أن يجد كل والد ووالدة في الجزائر ما يحتاجه أطفالهم من ألعاب ممتعة وأدوات مدرسية عملية، بجودة نثق بها وأسعار في المتناول، مع توصيل يصل إلى باب المنزل في كل ولايات الوطن.",
+      "about.h_mission": "🎯 رسالتنا",
+      "about.mission": "نؤمن أن اللعب والتعلّم حق لكل طفل. لذلك نختار منتجاتنا بعناية لتكون آمنة، متينة، ومحفّزة لخيال الطفل وذكائه، سواء كانت لعبة تعليمية أو محفظة مدرسية ترافقه طوال العام الدراسي.",
+      "about.h_why": "💡 لماذا نحن؟",
+      "about.why1": "تشكيلة مختارة من الألعاب والأدوات المدرسية في مكان واحد.",
+      "about.why2": "توصيل إلى جميع ولايات الجزائر الـ58.",
+      "about.why3": "الدفع عند الاستلام — تدفع فقط بعد أن تستلم وتعايِن طلبك.",
+      "about.why4": "دعم سريع عبر واتساب للإجابة على كل استفساراتك.",
+      "about.why5": "أسعار تنافسية وعروض متجددة.",
+      "about.h_commit": "🤝 التزامنا",
+      "about.commit": "رضاك وثقتك هما أساس عملنا. نسعى دائماً لتحسين خدمتنا وتوسيع تشكيلتنا، ونرحّب بملاحظاتك واقتراحاتك في أي وقت.",
+      "about.c1_t": "توصيل لكل الجزائر", "about.c1_d": "نصل إلى جميع الولايات الـ58 بأسعار توصيل واضحة حسب الولاية.",
+      "about.c2_t": "الدفع عند الاستلام", "about.c2_d": "لا حاجة لبطاقة بنكية — ادفع نقداً عند وصول طلبك.",
+      "about.c3_t": "منتجات مضمونة", "about.c3_d": "نختار منتجات آمنة ومتينة تناسب أطفالنا.",
+      "about.c4_t": "دعم عبر واتساب", "about.c4_d": "فريقنا جاهز للرد على استفساراتك بسرعة.",
+      "about.cta": "🛍️ تصفّح المتجر",
+      // صفحة التواصل
+      "contact.head_t": "اتصل بنا", "contact.head_s": "نحن هنا لمساعدتك — تواصل معنا في أي وقت",
+      "contact.wa_t": "واتساب", "contact.wa_d": "أسرع وسيلة للطلب والاستفسار. راسلنا مباشرة.", "contact.wa_btn": "تواصل عبر واتساب",
+      "contact.email_t": "البريد الإلكتروني", "contact.email_d": "للاستفسارات والاقتراحات وطلبات الجملة.", "contact.email_btn": "راسلنا",
+      "contact.phone_t": "الهاتف", "contact.phone_d": "اتصل بنا من السبت إلى الخميس، 9ص - 6م.",
+      "contact.addr_t": "العنوان", "contact.addr_d": "نخدم كل ولايات الجزائر عبر التوصيل.", "contact.addr_v": "الجزائر 🇩🇿",
+      "contact.faq_t": "❓ الأسئلة الشائعة",
+      "faq.q1": "كيف أطلب من الموقع؟", "faq.a1": "اختر منتجاتك وأضِفها إلى السلة، ثم اذهب إلى صفحة السلة واملأ اسمك ورقم هاتفك وولايتك، ثم اضغط \"تأكيد الطلب عبر واتساب\". ستُفتح محادثة واتساب بكل تفاصيل طلبك جاهزة للإرسال.",
+      "faq.q2": "ما هي طريقة الدفع؟", "faq.a2": "الدفع يكون <strong>عند الاستلام</strong> (Cash on Delivery) في كل الجزائر. تدفع نقداً لعامل التوصيل بعد استلام طلبك ومعاينته. لا حاجة لأي بطاقة بنكية.",
+      "faq.q3": "هل تُوصّلون إلى كل الولايات؟", "faq.a3": "نعم، نوصّل إلى جميع ولايات الجزائر الـ58. يختلف سعر التوصيل حسب الولاية ونوع التوصيل (إلى المنزل أو إلى مكتب التوصيل)، ويظهر السعر تلقائياً عند اختيار ولايتك في صفحة السلة.",
+      "faq.q4": "كم تستغرق مدة التوصيل؟", "faq.a4": "عادة من 2 إلى 5 أيام عمل حسب الولاية وشركة التوصيل. نتواصل معك عبر واتساب لتأكيد الطلب وموعد التسليم التقريبي.",
+      "faq.q5": "هل يمكنني إرجاع أو استبدال منتج؟", "faq.a5": "نعم، يمكنك طلب الاستبدال خلال 48 ساعة من الاستلام في حال وجود عيب في المنتج، بشرط أن يكون بحالته الأصلية. تواصل معنا عبر واتساب لترتيب ذلك.",
+      "faq.q6": "هل الأسعار تشمل التوصيل؟", "faq.a6": "أسعار المنتجات لا تشمل التوصيل. يُضاف سعر التوصيل حسب ولايتك، ويظهر بوضوح في ملخص الطلب قبل التأكيد. الطلبات فوق حدّ معيّن تحصل على توصيل مجاني.",
+    },
+
+    fr: {
+      "tagline": "Jouets et fournitures scolaires — livraison dans toutes les wilayas d'Algérie",
+      "nav.home": "Accueil", "nav.shop": "Boutique", "nav.toys": "Jouets",
+      "nav.school": "Fournitures scolaires", "nav.about": "À propos", "nav.contact": "Contact",
+      "aria.cart": "Panier", "aria.menu": "Menu", "aria.wa": "WhatsApp", "aria.lang": "Langue",
+      "hero.title": 'Le monde des <span class="hl">jouets</span> et fournitures scolaires<br>à portée de main en Algérie',
+      "hero.lead": "Une sélection de jouets pour enfants et de fournitures scolaires de qualité à prix abordables. Commandez maintenant et payez à la livraison partout en Algérie.",
+      "hero.cta_shop": "🛍️ Acheter maintenant", "hero.cta_school": "🎒 Fournitures scolaires",
+      "hero.badge_delivery": "Livraison dans les 58 wilayas", "hero.badge_cod": "Paiement à la livraison", "hero.badge_guarantee": "Produits garantis",
+      "hero.float_toys": "Jouets", "hero.float_school": "École", "hero.float_smart": "Éveil",
+      "feat.delivery_t": "Livraison rapide", "feat.delivery_d": "Vers toutes les wilayas d'Algérie",
+      "feat.cod_t": "Paiement à la livraison", "feat.cod_d": "Payez après réception de votre commande",
+      "feat.exchange_t": "Échange facile", "feat.exchange_d": "Sous 48 h après réception",
+      "feat.support_t": "Support via WhatsApp", "feat.support_d": "Nous répondons vite à vos questions",
+      "cats.kicker": "Acheter par catégorie", "cats.title": "Que cherchez-vous aujourd'hui ?", "cats.sub": "Choisissez la catégorie et commencez vos achats",
+      "cats.toys_t": "Jouets pour enfants", "cats.toys_d": "Voitures, poupées, cubes, jeux éducatifs et plus", "cats.toys_go": "Voir les jouets →",
+      "cats.school_t": "Fournitures scolaires", "cats.school_d": "Cartables, stylos, cahiers, géométrie et arts", "cats.school_go": "Voir les fournitures →",
+      "picks.kicker": "Les plus populaires", "picks.title": "Une sélection pour vous", "picks.sub": "Promos et nouveautés", "picks.viewall": "Voir tous les produits",
+      "cod.title": "Paiement à la livraison partout en Algérie", "cod.text": "Pas besoin de carte bancaire — vérifiez votre commande puis payez en espèces au livreur.", "cod.btn": "Commander",
+      "footer.about": "Votre boutique de référence pour les jouets et fournitures scolaires en Algérie. Qualité de confiance et prix abordables.",
+      "footer.quicklinks": "Liens rapides", "footer.store": "La boutique", "footer.contact_us": "Nous contacter",
+      "footer.cart": "Panier", "footer.faq": "Questions fréquentes", "footer.privacy": "Politique de confidentialité",
+      "footer.wa": "📱 WhatsApp", "footer.email": "✉️ E-mail",
+      "footer.hours": "🕐 Du samedi au jeudi, 9h - 18h",
+      "footer.rights": "Tous droits réservés", "footer.madewith": "Fait avec amour pour les enfants d'Algérie 🇩🇿",
+      "shop.head_title": "Boutique Kids of the Future", "shop.head_sub": "Jouets et fournitures scolaires — livraison partout en Algérie et paiement à la livraison",
+      "shop.chip_all": "Tout", "shop.chip_toys": "🧸 Jouets", "shop.chip_school": "🎒 Fournitures",
+      "shop.sort_default": "Tri par défaut", "shop.sort_price_asc": "Prix : croissant", "shop.sort_price_desc": "Prix : décroissant", "shop.sort_name": "Nom (A - Z)",
+      "shop.search_ph": "Rechercher un produit...", "shop.count_unit": "produit(s)",
+      "shop.no_results_t": "Aucun résultat", "shop.no_results_p": "Essayez un autre mot-clé ou changez de catégorie.",
+      "card.add": "🛒 Ajouter", "card.unavailable": "Indisponible", "card.out": "Rupture de stock", "card.toys": "Jouets", "card.school": "Fournitures",
+      "pdp.age": "👶 Âge : {v} ans", "pdp.cod_tag": "💵 Paiement à la livraison", "pdp.delivery_tag": "🚚 Livraison dans toutes les wilayas",
+      "pdp.in_stock": "✔ En stock", "pdp.out_stock": "✖ En rupture de stock",
+      "pdp.add": "🛒 Ajouter au panier", "pdp.buy": "Commander via WhatsApp", "pdp.related": "Produits similaires",
+      "pdp.notfound_t": "Produit introuvable", "pdp.notfound_p": "Il a peut-être été supprimé ou le lien a changé.", "pdp.notfound_btn": "Parcourir la boutique",
+      "pdp.wa_msg": "Bonjour, je souhaite commander ce produit :",
+      "cart.head_title": "🛒 Panier", "cart.head_sub": "Vérifiez votre commande et complétez vos informations — paiement à la livraison",
+      "cart.empty_t": "Votre panier est vide", "cart.empty_p": "Vous n'avez encore rien ajouté. Découvrez notre sélection de jouets et fournitures scolaires.", "cart.empty_btn": "Commencer mes achats",
+      "cart.per_piece": "l'unité", "cart.remove": "🗑 Retirer",
+      "cart.summary": "Récapitulatif", "cart.subtotal": "Sous-total", "cart.delivery": "Livraison", "cart.total": "Total",
+      "cart.by_wilaya": "Calculée selon la wilaya", "cart.free": "Gratuite 🎉", "cart.free_congrats": "🎉 Félicitations ! Livraison gratuite obtenue",
+      "cart.free_add_pre": "Ajoutez encore ", "cart.free_add_post": " pour la livraison gratuite 🚚",
+      "cart.info_title": "Informations de livraison",
+      "cart.f_name": "Nom complet", "cart.f_phone": "Numéro de téléphone", "cart.f_wilaya": "Wilaya", "cart.f_city": "Commune / Adresse", "cart.f_notes": "Remarques (facultatif)",
+      "cart.ph_name": "Ex : Ahmed Ben Ali", "cart.ph_phone": "0X XX XX XX XX", "cart.ph_city": "Commune ou adresse détaillée", "cart.ph_notes": "Détails supplémentaires sur la commande",
+      "cart.choose_wilaya": "— Choisissez la wilaya —", "cart.dtype": "Type de livraison", "cart.dtype_home": "🏠 À domicile", "cart.dtype_office": "🏢 Point de retrait",
+      "cart.submit": "📲 Confirmer la commande via WhatsApp", "cart.cod_note": "💵 Paiement à la livraison — pas de carte bancaire requise",
+      "cart.err_name": "Veuillez saisir votre nom", "cart.err_phone": "Saisissez un numéro valide (10 chiffres)", "cart.err_wilaya": "Veuillez choisir la wilaya",
+      "wa.new_order": "🛒 *Nouvelle commande de {store}*", "wa.subtotal": "Sous-total", "wa.delivery": "Livraison",
+      "wa.home": "domicile", "wa.office": "point de retrait", "wa.total": "Total", "wa.name": "Nom", "wa.phone": "Téléphone",
+      "wa.wilaya": "Wilaya", "wa.address": "Commune/Adresse", "wa.dtype": "Type de livraison", "wa.dtype_home": "À domicile", "wa.dtype_office": "Point de retrait",
+      "wa.notes": "Remarques", "wa.payment": "Paiement", "wa.cod": "à la livraison", "wa.generic": "Bonjour, je souhaite des informations sur les produits de {store} 🧸",
+      "about.head_t": "À propos", "about.head_s": "Notre histoire et notre mission pour les enfants d'Algérie",
+      "about.p1": "<strong>Kids of the Future</strong> est une boutique en ligne algérienne spécialisée dans les jouets pour enfants et les fournitures scolaires. Notre idée est simple : que chaque parent en Algérie trouve ce dont ses enfants ont besoin — des jouets amusants et des fournitures pratiques, de qualité et à prix abordables, livrés jusqu'à la porte dans toutes les wilayas.",
+      "about.h_mission": "🎯 Notre mission",
+      "about.mission": "Nous croyons que jouer et apprendre est un droit pour chaque enfant. Nous choisissons donc nos produits avec soin : sûrs, durables et stimulants pour l'imagination et l'intelligence de l'enfant, qu'il s'agisse d'un jeu éducatif ou d'un cartable qui l'accompagne toute l'année.",
+      "about.h_why": "💡 Pourquoi nous ?",
+      "about.why1": "Une sélection de jouets et de fournitures scolaires au même endroit.",
+      "about.why2": "Livraison dans les 58 wilayas d'Algérie.",
+      "about.why3": "Paiement à la livraison — vous payez seulement après réception et vérification.",
+      "about.why4": "Support rapide via WhatsApp pour toutes vos questions.",
+      "about.why5": "Prix compétitifs et promotions régulières.",
+      "about.h_commit": "🤝 Notre engagement",
+      "about.commit": "Votre satisfaction et votre confiance sont au cœur de notre travail. Nous cherchons toujours à améliorer notre service et à élargir notre gamme, et nous accueillons vos remarques à tout moment.",
+      "about.c1_t": "Livraison partout", "about.c1_d": "Nous livrons dans les 58 wilayas avec des tarifs clairs par wilaya.",
+      "about.c2_t": "Paiement à la livraison", "about.c2_d": "Pas de carte bancaire — payez en espèces à la réception.",
+      "about.c3_t": "Produits garantis", "about.c3_d": "Nous choisissons des produits sûrs et durables pour nos enfants.",
+      "about.c4_t": "Support via WhatsApp", "about.c4_d": "Notre équipe est prête à répondre rapidement.",
+      "about.cta": "🛍️ Parcourir la boutique",
+      "contact.head_t": "Contact", "contact.head_s": "Nous sommes là pour vous aider — contactez-nous à tout moment",
+      "contact.wa_t": "WhatsApp", "contact.wa_d": "Le moyen le plus rapide de commander et de nous joindre.", "contact.wa_btn": "Contacter via WhatsApp",
+      "contact.email_t": "E-mail", "contact.email_d": "Pour vos questions, suggestions et commandes en gros.", "contact.email_btn": "Écrivez-nous",
+      "contact.phone_t": "Téléphone", "contact.phone_d": "Appelez-nous du samedi au jeudi, 9h - 18h.",
+      "contact.addr_t": "Adresse", "contact.addr_d": "Nous servons toutes les wilayas d'Algérie par livraison.", "contact.addr_v": "Algérie 🇩🇿",
+      "contact.faq_t": "❓ Questions fréquentes",
+      "faq.q1": "Comment commander sur le site ?", "faq.a1": "Choisissez vos produits, ajoutez-les au panier, puis allez sur la page Panier et remplissez votre nom, téléphone et wilaya, puis cliquez sur « Confirmer la commande via WhatsApp ». Une conversation WhatsApp s'ouvrira avec tous les détails prêts à envoyer.",
+      "faq.q2": "Quel est le mode de paiement ?", "faq.a2": "Le paiement se fait <strong>à la livraison</strong> (Cash on Delivery) partout en Algérie. Vous payez en espèces au livreur après réception et vérification. Aucune carte bancaire requise.",
+      "faq.q3": "Livrez-vous dans toutes les wilayas ?", "faq.a3": "Oui, nous livrons dans les 58 wilayas d'Algérie. Le tarif varie selon la wilaya et le type de livraison (à domicile ou point de retrait), et s'affiche automatiquement au choix de votre wilaya sur la page Panier.",
+      "faq.q4": "Quel est le délai de livraison ?", "faq.a4": "Généralement de 2 à 5 jours ouvrables selon la wilaya et le transporteur. Nous vous contactons via WhatsApp pour confirmer la commande et la date approximative.",
+      "faq.q5": "Puis-je retourner ou échanger un produit ?", "faq.a5": "Oui, vous pouvez demander un échange sous 48 h après réception en cas de défaut, à condition que le produit soit dans son état d'origine. Contactez-nous via WhatsApp.",
+      "faq.q6": "Les prix incluent-ils la livraison ?", "faq.a6": "Les prix des produits n'incluent pas la livraison. Les frais sont ajoutés selon votre wilaya et affichés clairement dans le récapitulatif avant confirmation. Les commandes au-dessus d'un certain montant bénéficient de la livraison gratuite.",
+    },
+
+    en: {
+      "tagline": "Kids' toys and school supplies — delivery to all wilayas of Algeria",
+      "nav.home": "Home", "nav.shop": "Shop", "nav.toys": "Toys",
+      "nav.school": "School Supplies", "nav.about": "About", "nav.contact": "Contact",
+      "aria.cart": "Cart", "aria.menu": "Menu", "aria.wa": "WhatsApp", "aria.lang": "Language",
+      "hero.title": 'The world of <span class="hl">toys</span> and school supplies<br>at your fingertips in Algeria',
+      "hero.lead": "A curated selection of kids' toys and school supplies at great quality and affordable prices. Order now and pay on delivery anywhere in Algeria.",
+      "hero.cta_shop": "🛍️ Shop now", "hero.cta_school": "🎒 School Supplies",
+      "hero.badge_delivery": "Delivery to all 58 wilayas", "hero.badge_cod": "Cash on delivery", "hero.badge_guarantee": "Guaranteed products",
+      "hero.float_toys": "Toys", "hero.float_school": "School", "hero.float_smart": "Learning",
+      "feat.delivery_t": "Fast delivery", "feat.delivery_d": "To every wilaya in Algeria",
+      "feat.cod_t": "Cash on delivery", "feat.cod_d": "Pay after you receive your order",
+      "feat.exchange_t": "Easy exchange", "feat.exchange_d": "Within 48 hours of delivery",
+      "feat.support_t": "WhatsApp support", "feat.support_d": "We answer your questions fast",
+      "cats.kicker": "Shop by category", "cats.title": "What are you looking for today?", "cats.sub": "Pick a category and start shopping",
+      "cats.toys_t": "Kids' toys", "cats.toys_d": "Cars, dolls, blocks, educational toys and more", "cats.toys_go": "Browse toys →",
+      "cats.school_t": "School supplies", "cats.school_d": "Backpacks, pens, notebooks, geometry and arts", "cats.school_go": "Browse supplies →",
+      "picks.kicker": "Most popular", "picks.title": "Picked for you", "picks.sub": "Deals and latest additions", "picks.viewall": "View all products",
+      "cod.title": "Cash on delivery across Algeria", "cod.text": "No bank card needed — inspect your order, then pay the courier in cash.", "cod.btn": "Order now",
+      "footer.about": "Your go-to store for kids' toys and school supplies in Algeria. Quality you can trust at affordable prices.",
+      "footer.quicklinks": "Quick links", "footer.store": "Store", "footer.contact_us": "Contact us",
+      "footer.cart": "Cart", "footer.faq": "FAQ", "footer.privacy": "Privacy Policy",
+      "footer.wa": "📱 WhatsApp", "footer.email": "✉️ Email",
+      "footer.hours": "🕐 Saturday to Thursday, 9am - 6pm",
+      "footer.rights": "All rights reserved", "footer.madewith": "Made with love for the children of Algeria 🇩🇿",
+      "shop.head_title": "Kids of the Future Store", "shop.head_sub": "Curated toys and school supplies — delivery across Algeria and cash on delivery",
+      "shop.chip_all": "All", "shop.chip_toys": "🧸 Toys", "shop.chip_school": "🎒 Supplies",
+      "shop.sort_default": "Default sorting", "shop.sort_price_asc": "Price: low to high", "shop.sort_price_desc": "Price: high to low", "shop.sort_name": "Name (A - Z)",
+      "shop.search_ph": "Search for a product...", "shop.count_unit": "product(s)",
+      "shop.no_results_t": "No results", "shop.no_results_p": "Try another keyword or change the category.",
+      "card.add": "🛒 Add to cart", "card.unavailable": "Unavailable", "card.out": "Out of stock", "card.toys": "Toys", "card.school": "Supplies",
+      "pdp.age": "👶 Age: {v} years", "pdp.cod_tag": "💵 Cash on delivery", "pdp.delivery_tag": "🚚 Delivery to all wilayas",
+      "pdp.in_stock": "✔ In stock", "pdp.out_stock": "✖ Currently out of stock",
+      "pdp.add": "🛒 Add to cart", "pdp.buy": "Order via WhatsApp", "pdp.related": "Related products",
+      "pdp.notfound_t": "Product not found", "pdp.notfound_p": "It may have been removed or the link changed.", "pdp.notfound_btn": "Browse the store",
+      "pdp.wa_msg": "Hello, I'd like to order this product:",
+      "cart.head_title": "🛒 Shopping Cart", "cart.head_sub": "Review your order and complete your details — cash on delivery",
+      "cart.empty_t": "Your cart is empty", "cart.empty_p": "You haven't added anything yet. Discover our selection of toys and school supplies.", "cart.empty_btn": "Start shopping",
+      "cart.per_piece": "each", "cart.remove": "🗑 Remove",
+      "cart.summary": "Order summary", "cart.subtotal": "Subtotal", "cart.delivery": "Delivery", "cart.total": "Total",
+      "cart.by_wilaya": "Calculated by wilaya", "cart.free": "Free 🎉", "cart.free_congrats": "🎉 Congrats! You got free delivery",
+      "cart.free_add_pre": "Add ", "cart.free_add_post": " more for free delivery 🚚",
+      "cart.info_title": "Delivery information",
+      "cart.f_name": "Full name", "cart.f_phone": "Phone number", "cart.f_wilaya": "Wilaya", "cart.f_city": "Municipality / Address", "cart.f_notes": "Notes (optional)",
+      "cart.ph_name": "e.g. Ahmed Ben Ali", "cart.ph_phone": "0X XX XX XX XX", "cart.ph_city": "Municipality or detailed address", "cart.ph_notes": "Any extra details about the order",
+      "cart.choose_wilaya": "— Choose wilaya —", "cart.dtype": "Delivery type", "cart.dtype_home": "🏠 To home", "cart.dtype_office": "🏢 Pickup desk",
+      "cart.submit": "📲 Confirm order via WhatsApp", "cart.cod_note": "💵 Cash on delivery — no bank card required",
+      "cart.err_name": "Please enter your name", "cart.err_phone": "Enter a valid phone number (10 digits)", "cart.err_wilaya": "Please choose a wilaya",
+      "wa.new_order": "🛒 *New order from {store}*", "wa.subtotal": "Subtotal", "wa.delivery": "Delivery",
+      "wa.home": "home", "wa.office": "pickup desk", "wa.total": "Total", "wa.name": "Name", "wa.phone": "Phone",
+      "wa.wilaya": "Wilaya", "wa.address": "Municipality/Address", "wa.dtype": "Delivery type", "wa.dtype_home": "To home", "wa.dtype_office": "Pickup desk",
+      "wa.notes": "Notes", "wa.payment": "Payment", "wa.cod": "on delivery", "wa.generic": "Hello, I'd like information about {store} products 🧸",
+      "about.head_t": "About us", "about.head_s": "Our story and mission for the children of Algeria",
+      "about.p1": "<strong>Kids of the Future</strong> is an Algerian online store specialized in kids' toys and school supplies. We started from a simple idea: that every parent in Algeria can find what their children need — fun toys and practical school supplies, of trusted quality and at affordable prices, delivered to the doorstep in every wilaya.",
+      "about.h_mission": "🎯 Our mission",
+      "about.mission": "We believe that play and learning are every child's right. That's why we carefully select products that are safe, durable, and stimulating for a child's imagination and intelligence — whether an educational toy or a backpack that lasts the whole school year.",
+      "about.h_why": "💡 Why us?",
+      "about.why1": "A curated selection of toys and school supplies in one place.",
+      "about.why2": "Delivery to all 58 wilayas of Algeria.",
+      "about.why3": "Cash on delivery — you pay only after receiving and checking your order.",
+      "about.why4": "Fast WhatsApp support for all your questions.",
+      "about.why5": "Competitive prices and regular deals.",
+      "about.h_commit": "🤝 Our commitment",
+      "about.commit": "Your satisfaction and trust are at the heart of what we do. We always strive to improve our service and expand our range, and we welcome your feedback anytime.",
+      "about.c1_t": "Delivery everywhere", "about.c1_d": "We deliver to all 58 wilayas with clear per-wilaya rates.",
+      "about.c2_t": "Cash on delivery", "about.c2_d": "No bank card — pay in cash when your order arrives.",
+      "about.c3_t": "Guaranteed products", "about.c3_d": "We choose safe, durable products for our children.",
+      "about.c4_t": "WhatsApp support", "about.c4_d": "Our team is ready to reply quickly.",
+      "about.cta": "🛍️ Browse the store",
+      "contact.head_t": "Contact us", "contact.head_s": "We're here to help — reach us anytime",
+      "contact.wa_t": "WhatsApp", "contact.wa_d": "The fastest way to order and reach us.", "contact.wa_btn": "Contact via WhatsApp",
+      "contact.email_t": "Email", "contact.email_d": "For questions, suggestions and wholesale orders.", "contact.email_btn": "Write to us",
+      "contact.phone_t": "Phone", "contact.phone_d": "Call us Saturday to Thursday, 9am - 6pm.",
+      "contact.addr_t": "Address", "contact.addr_d": "We serve all wilayas of Algeria via delivery.", "contact.addr_v": "Algeria 🇩🇿",
+      "contact.faq_t": "❓ Frequently asked questions",
+      "faq.q1": "How do I order from the site?", "faq.a1": "Choose your products and add them to the cart, then go to the Cart page and fill in your name, phone, and wilaya, then click \"Confirm order via WhatsApp\". A WhatsApp chat opens with all your order details ready to send.",
+      "faq.q2": "What is the payment method?", "faq.a2": "Payment is <strong>on delivery</strong> (Cash on Delivery) across Algeria. You pay the courier in cash after receiving and checking your order. No bank card needed.",
+      "faq.q3": "Do you deliver to all wilayas?", "faq.a3": "Yes, we deliver to all 58 wilayas of Algeria. The delivery price varies by wilaya and delivery type (to home or pickup desk), and appears automatically when you select your wilaya on the Cart page.",
+      "faq.q4": "How long does delivery take?", "faq.a4": "Usually 2 to 5 working days depending on the wilaya and courier. We contact you via WhatsApp to confirm the order and the approximate delivery date.",
+      "faq.q5": "Can I return or exchange a product?", "faq.a5": "Yes, you can request an exchange within 48 hours of delivery if the product is defective, provided it's in its original condition. Contact us via WhatsApp to arrange it.",
+      "faq.q6": "Do prices include delivery?", "faq.a6": "Product prices do not include delivery. The delivery fee is added based on your wilaya and shown clearly in the order summary before confirmation. Orders above a certain amount get free delivery.",
+    },
+  };
+
+  function getLang() {
+    try {
+      var l = localStorage.getItem(LANG_KEY);
+      if (l && META[l]) return l;
+    } catch (e) {}
+    return DEFAULT;
+  }
+
+  function t(key, lang) {
+    var l = lang || getLang();
+    var table = STR[l] || STR[DEFAULT];
+    if (table[key] != null) return table[key];
+    if (STR[DEFAULT][key] != null) return STR[DEFAULT][key];
+    return key;
+  }
+
+  function applyDir(lang) {
+    var m = META[lang] || META[DEFAULT];
+    document.documentElement.setAttribute("lang", m.htmlLang);
+    document.documentElement.setAttribute("dir", m.dir);
+  }
+
+  function apply(root) {
+    root = root || document;
+    var lang = getLang();
+    applyDir(lang);
+    root.querySelectorAll("[data-i18n]").forEach(function (el) {
+      el.textContent = t(el.getAttribute("data-i18n"), lang);
+    });
+    root.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+      el.innerHTML = t(el.getAttribute("data-i18n-html"), lang);
+    });
+    root.querySelectorAll("[data-i18n-ph]").forEach(function (el) {
+      el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"), lang));
+    });
+    root.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+      el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria"), lang));
+    });
+    // تحديث الأزرار في مبدّل اللغة
+    root.querySelectorAll("[data-lang-opt]").forEach(function (el) {
+      el.classList.toggle("active", el.getAttribute("data-lang-opt") === lang);
+    });
+    root.querySelectorAll("[data-lang-current]").forEach(function (el) {
+      el.textContent = (META[lang] || META[DEFAULT]).short;
+    });
+  }
+
+  function setLang(lang) {
+    if (!META[lang]) return;
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    apply(document);
+    document.dispatchEvent(new CustomEvent("langchange", { detail: { lang: lang } }));
+  }
+
+  // ضبط الاتجاه فوراً قبل رسم الصفحة لتفادي وميض الاتجاه
+  applyDir(getLang());
+
+  window.I18N = { t: t, getLang: getLang, setLang: setLang, apply: apply, META: META };
+})();
