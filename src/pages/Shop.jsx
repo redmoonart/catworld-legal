@@ -54,15 +54,20 @@ export default function Shop() {
                 {t("shop.chip_school")}
               </button>
             </div>
-            <select className="select" aria-label="sort" value={sort} onChange={(e) => setSort(e.target.value)}>
-              <option value="default">{t("shop.sort_default")}</option>
-              <option value="price-asc">{t("shop.sort_price_asc")}</option>
-              <option value="price-desc">{t("shop.sort_price_desc")}</option>
-              <option value="name">{t("shop.sort_name")}</option>
-            </select>
-            <div className="search-box">
-              <input type="search" placeholder={t("shop.search_ph")} value={q} onChange={(e) => setQ(e.target.value)} />
-              <span className="ic">🔍</span>
+            <div className="toolbar-tools">
+              <div className="search-box">
+                <input type="search" placeholder={t("shop.search_ph")} value={q} onChange={(e) => setQ(e.target.value)} />
+                <span className="ic" aria-hidden="true">🔍</span>
+              </div>
+              <div className="sort-control">
+                <span className="sort-ic" aria-hidden="true">⇅</span>
+                <select className="select" aria-label="sort" value={sort} onChange={(e) => setSort(e.target.value)}>
+                  <option value="default">{t("shop.sort_default")}</option>
+                  <option value="price-asc">{t("shop.sort_price_asc")}</option>
+                  <option value="price-desc">{t("shop.sort_price_desc")}</option>
+                  <option value="name">{t("shop.sort_name")}</option>
+                </select>
+              </div>
             </div>
           </div>
           <p style={{ color: "var(--muted)", marginBottom: 16 }}>
