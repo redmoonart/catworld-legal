@@ -701,23 +701,12 @@ body::before {
   filter: blur(12px);
 }
 
-/* عناصر تطفو بعمق حول الشخصية */
-.hero-orbit { position: absolute; inset: 0; pointer-events: none; transform-style: preserve-3d;
-  transition: transform .3s ease-out; z-index: 5; }
-.hero-orbit .orb {
-  position: absolute; width: 58px; height: 58px; border-radius: 18px; display: grid; place-items: center;
-  font-size: 1.9rem; background: rgba(255,255,255,.92); backdrop-filter: blur(4px);
-  box-shadow: 0 16px 30px rgba(16,24,40,.28), inset 0 1px 0 #fff;
-  animation: orbFloat 6s ease-in-out infinite;
-}
-.hero-orbit .o1 { top: 6%; left: 42%; transform: translateZ(120px); }
-.hero-orbit .o2 { top: 30%; left: 2%; transform: translateZ(90px); animation-delay: 1s; }
-.hero-orbit .o3 { top: 14%; right: 4%; transform: translateZ(140px); animation-delay: .5s; }
-.hero-orbit .o4 { top: 50%; right: 2%; transform: translateZ(100px); animation-delay: 1.6s; }
+/* ألعاب ثلاثية الأبعاد حقيقية (WebGL) تطفو حول الشخصية */
+.hero-toys-layer { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+.hero-toys-canvas { width: 100% !important; height: 100% !important; display: block; }
 @keyframes orbFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -16px; } }
 
 @media (max-width: 760px) {
-  .hero-orbit { display: none; }
   .hero-scene { animation: none; }
   .hero3d::after { bottom: auto; }
 }

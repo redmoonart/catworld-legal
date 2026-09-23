@@ -1,8 +1,10 @@
-import { useRef } from "react";
+import { useRef, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useI18n, Trans } from "../i18n/I18nContext";
 import heroImg from "../assets/hero.png";
+
+const HeroToys3D = lazy(() => import("./HeroToys3D"));
 
 const container = {
   hidden: {},
@@ -27,8 +29,6 @@ export default function Hero3D() {
   const fxY = useTransform(sty, (v) => v * 14);
   const glowX = useTransform(stx, (v) => v * -16);
   const glowY = useTransform(sty, (v) => v * -9);
-  const orbitX = useTransform(stx, (v) => v * 24);
-  const orbitY = useTransform(sty, (v) => v * 16);
 
   function handleMove(e) {
     const r = ref.current.getBoundingClientRect();
@@ -98,12 +98,11 @@ export default function Hero3D() {
                     <span className="floaty-emoji e3">🚀</span>
                   </motion.div>
                 </motion.div>
-                <motion.div className="hero-orbit" style={{ x: orbitX, y: orbitY }} aria-hidden="true">
-                  <span className="orb o1">🚗</span>
-                  <span className="orb o2">🎨</span>
-                  <span className="orb o3">🧩</span>
-                  <span className="orb o4">🎒</span>
-                </motion.div>
+                <div className="hero-toys-layer" aria-hidden="true">
+                  <Suspense fallback={null}>
+                    <HeroToys3D tx={stx} ty={sty} />
+                  </Suspense>
+                </div>
               </div>
             </motion.div>
             <motion.div
