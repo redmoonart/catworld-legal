@@ -24,6 +24,25 @@ export default function Home() {
 
       <section className="section-sm">
         <div className="wrap">
+          <Reveal className="stat-strip">
+            <div className="stat-card c1">
+              <span className="num">58</span>
+              <span className="lbl">{t("feat.delivery_d")}</span>
+            </div>
+            <div className="stat-card c2">
+              <span className="num">48h</span>
+              <span className="lbl">{t("feat.exchange_d")}</span>
+            </div>
+            <div className="stat-card c3">
+              <span className="num">100%</span>
+              <span className="lbl">{t("feat.cod_d")}</span>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section-sm">
+        <div className="wrap">
           <div className="features">
             {FEATURES.map(([ic, tt, dd], i) => (
               <Reveal key={tt} className="feature" delay={i * 0.06}>
