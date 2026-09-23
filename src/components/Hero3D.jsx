@@ -59,9 +59,12 @@ export default function Hero3D() {
   const exitScale = useTransform(heroScroll, [0, 1], [1, 1 + 0.06 * exitAmp]);
   const exitOpacity = useTransform(heroScroll, [0, 1], [1, 1 - 0.1 * exitAmp]);
   const exitY = useTransform(heroScroll, [0, 1], [0, -40 * exitAmp]);
+  // الخلفية تتحرك أبطأ بكثير من الصورة الأمامية — إحساس بعمق الطبقات
+  const bgY = useTransform(heroScroll, [0, 1], [0, -15 * exitAmp]);
 
   return (
     <section className="hero-cine" ref={sectionRef}>
+      <motion.div className="hero-bg-layer" style={{ y: bgY }} aria-hidden="true" />
       <div className="hero-ribbon">{t("ribbon")}</div>
       <div className="wrap">
         <div className="hero-split">

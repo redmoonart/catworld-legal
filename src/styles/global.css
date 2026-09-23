@@ -234,13 +234,18 @@ ul { list-style: none; }
    ============================================================ */
 .hero-cine {
   position: relative;
-  background:
-    radial-gradient(900px 500px at 88% -10%, rgba(242,167,27,.10), transparent 60%),
-    radial-gradient(760px 520px at -4% 24%, rgba(216,121,67,.07), transparent 55%),
-    var(--bg);
+  background: var(--bg);
   overflow: hidden;
   padding: 10px 0 0;
 }
+/* طبقة خلفية منفصلة تتحرك ببطء أثناء الـscroll (أبطأ من الصورة الأمامية) لإحساس بالعمق */
+.hero-bg-layer {
+  position: absolute; inset: -60px 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(900px 500px at 88% -10%, rgba(242,167,27,.10), transparent 60%),
+    radial-gradient(760px 520px at -4% 24%, rgba(216,121,67,.07), transparent 55%);
+}
+.hero-cine > .hero-ribbon, .hero-cine > .wrap { position: relative; z-index: 1; }
 
 .hero-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .92fr); gap: 42px; align-items: center; padding: 46px 0 58px; }
 
