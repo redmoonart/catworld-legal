@@ -10,6 +10,7 @@ export default function Shop() {
   const { t, lang } = useI18n();
   const [searchParams, setSearchParams] = useSearchParams();
   const [cat, setCat] = useState(searchParams.get("cat") || "all");
+  const subcat = searchParams.get("subcat") || "";
   const [q, setQ] = useState("");
   const [sort, setSort] = useState("default");
 
@@ -25,6 +26,7 @@ export default function Shop() {
   const list = useMemo(() => {
     let l = PRODUCTS.slice();
     if (cat !== "all") l = l.filter((p) => p.category === cat);
+    if (subcat) l = l.filter((p) => p.subCategory === subcat);
     if (q) {
       const qq = q.trim().toLowerCase();
       l = l.filter((p) =>

@@ -18,8 +18,20 @@ const FEATURES = [
   ["📞", "feat.support_t", "feat.support_d"],
 ];
 
+const CAT_STRIP = [
+  { emoji: "🧸", key: "catstrip.toys", to: "/shop?cat=toys" },
+  { emoji: "🧩", key: "catstrip.educational", to: "/shop?subcat=educational" },
+  { emoji: "🚗", key: "catstrip.vehicles", to: "/shop?subcat=vehicles" },
+  { emoji: "🎨", key: "catstrip.art", to: "/shop?subcat=art" },
+  { emoji: "🎮", key: "catstrip.misc", to: "/shop?subcat=misc-toys" },
+  { emoji: "🎒", key: "catstrip.backpacks", to: "/shop?subcat=backpacks" },
+  { emoji: "📚", key: "catstrip.notebooks", to: "/shop?subcat=notebooks" },
+  { emoji: "✏️", key: "catstrip.schooltools", to: "/shop?subcat=school-tools" },
+  { emoji: "🎁", key: "catstrip.study", to: "/shop?subcat=study-essentials" },
+];
+
 export default function Home() {
-  const { t } = useI18n();
+  const { t, meta } = useI18n();
   const picks = PRODUCTS.filter((p) => p.badge || p.oldPrice).slice(0, 8);
   const featured = picks.length ? picks : PRODUCTS.slice(0, 8);
   const schoolSupplies = PRODUCTS.filter((p) => p.category === "school").slice(0, 4);
@@ -81,19 +93,14 @@ export default function Home() {
             <h2>{t("cats.title")}</h2>
             <p>{t("cats.sub")}</p>
           </ScrollReveal>
-          <div className="cats">
-            <RevealLink to="/shop?cat=toys" className="cat-card toys">
-              <span className="em">🧸</span>
-              <h3>{t("cats.toys_t")}</h3>
-              <p>{t("cats.toys_d")}</p>
-              <span className="go">{t("cats.toys_go")}</span>
-            </RevealLink>
-            <RevealLink to="/shop?cat=school" className="cat-card school" delay={0.15}>
-              <span className="em">🎒</span>
-              <h3>{t("cats.school_t")}</h3>
-              <p>{t("cats.school_d")}</p>
-              <span className="go">{t("cats.school_go")}</span>
-            </RevealLink>
+          <div className="cat-strip">
+            {CAT_STRIP.map((c, i) => (
+              <RevealLink key={c.to} to={c.to} className="cat-chip" delay={i * 0.05} y={16}>
+                <span className="ic">{c.emoji}</span>
+                <h3>{t(c.key)}</h3>
+                <span className="go">{meta.dir === "rtl" ? "←" : "→"}</span>
+              </RevealLink>
+            ))}
           </div>
         </div>
       </section>

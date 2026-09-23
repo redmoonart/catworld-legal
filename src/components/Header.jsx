@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useI18n } from "../i18n/I18nContext";
 import { useCart } from "../cart/CartContext";
-import { STORE_CONFIG } from "../data/config";
 import SearchOverlay from "./SearchOverlay";
 
 const LANGS = [
@@ -69,10 +68,12 @@ export default function Header() {
     <header className={`header${scrolled ? " scrolled" : ""}`}>
       <div className="wrap header-inner">
         <Link to="/" className="brand" onClick={closeMenu}>
-          <span className="logo logo-img">🧸</span>
-          <span>
-            {STORE_CONFIG.name}
-            <small data-tagline>{t("tagline")}</small>
+          <span className="logo logo-img">
+            <span className="logo-rocket" aria-hidden="true">🚀</span>
+          </span>
+          <span className="brand-word">
+            <span className="brand-line1">Kids</span>
+            <span className="brand-line2">of the Future</span>
           </span>
         </Link>
         <nav className={`nav${menuOpen ? " open" : ""}`}>
@@ -109,6 +110,18 @@ export default function Header() {
               ))}
             </div>
           </div>
+          <button
+            type="button"
+            className="search-bar-trigger"
+            aria-label={t("aria.search")}
+            onClick={() => {
+              closeMenu();
+              setSearchOpen(true);
+            }}
+          >
+            <span className="ph">{t("shop.search_ph")}</span>
+            <span className="ic" aria-hidden="true">🔍</span>
+          </button>
           <button
             type="button"
             className="search-btn"
