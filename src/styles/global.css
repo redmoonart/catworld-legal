@@ -7,6 +7,7 @@
   --primary: #d87943;      /* تيراكوتا — اللون الأساسي للأزرار والعناصر النشطة */
   --primary-dark: #b8632f;
   --primary-light: #f7e8e0;
+  --primary-text: #9c5227; /* نسخة أغمق من التيراكوتا لنص صغير يفي بتباين WCAG AA (4.5:1) */
   --accent: #527575;       /* أخضر مريمية هادئ — لون ثانوي */
   --accent-dark: #416060;
   --teal: #527575;
@@ -57,7 +58,7 @@ ul { list-style: none; }
 .section-head h2 { font-size: 1.9rem; color: var(--ink); }
 .section-head p { color: var(--muted); margin-top: 6px; }
 .section-head .kicker {
-  color: var(--primary); font-weight: 700; letter-spacing: .5px;
+  color: var(--primary-text); font-weight: 700; letter-spacing: .5px;
   font-size: .85rem; display: inline-block; margin-bottom: 6px;
 }
 
@@ -77,7 +78,7 @@ ul { list-style: none; }
 .btn-wa { background: #25d366; color: #fff; box-shadow: 0 6px 16px rgba(37,211,102,.3); }
 .btn-wa:hover { background: #1eb658; }
 .btn-ghost { background: #fff; color: var(--ink); border: 2px solid var(--line); }
-.btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+.btn-ghost:hover { border-color: var(--primary); color: var(--primary-text); }
 .btn-block { width: 100%; }
 .btn-lg { padding: 15px 30px; font-size: 1.05rem; }
 .btn-sm { padding: 9px 16px; font-size: .9rem; }
@@ -128,9 +129,9 @@ ul { list-style: none; }
   background: var(--primary);
   transform: scaleX(0); transform-origin: center; transition: transform .25s cubic-bezier(.16,.84,.44,1);
 }
-.nav a:hover { color: var(--primary); }
+.nav a:hover { color: var(--primary-text); }
 .nav a:hover::after { transform: scaleX(1); }
-.nav a.active { color: var(--primary); font-weight: 800; }
+.nav a.active { color: var(--primary-text); font-weight: 800; }
 .nav a.active::after { transform: scaleX(1); }
 
 .header-actions { display: flex; align-items: center; gap: 10px; }
@@ -368,9 +369,9 @@ ul { list-style: none; }
 .disc { position: absolute; top: 10px; inset-inline-end: 10px; background: var(--danger); color:#fff;
   font-size: .72rem; font-weight: 700; padding: 4px 8px; border-radius: 999px; z-index: 3; }
 .pcard .body { padding: 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.pcard .cat-tag { font-size: .72rem; color: var(--primary); font-weight: 700; }
+.pcard .cat-tag { font-size: .72rem; color: var(--primary-text); font-weight: 700; }
 .pcard h3 { font-size: 1rem; line-height: 1.45; min-height: 2.9em; }
-.pcard h3 a:hover { color: var(--primary); }
+.pcard h3 a:hover { color: var(--primary-text); }
 .pcard .price { display: flex; align-items: baseline; gap: 8px; margin-top: auto; }
 .pcard .price .now { font-size: 1.15rem; font-weight: 800; color: var(--ink); }
 .pcard .price .cur { font-size: .8rem; color: var(--muted); font-weight: 600; }
@@ -399,7 +400,7 @@ ul { list-style: none; }
 .sort-control .sort-ic { font-size: .95rem; opacity: .7; }
 select.select { border: 0; background: transparent; color: var(--muted); font-family: inherit;
   font-size: .86rem; font-weight: 700; padding: 8px 4px; border-radius: 8px; cursor: pointer; }
-select.select:hover, select.select:focus { color: var(--primary); background: var(--primary-light); }
+select.select:hover, select.select:focus { color: var(--primary-text); background: var(--primary-light); }
 
 /* ---------- تفاصيل المنتج ---------- */
 .pdp { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 34px; align-items: start; }
@@ -412,10 +413,10 @@ select.select:hover, select.select:focus { color: var(--primary); background: va
 .pdp .info .price .old { text-decoration: line-through; color: var(--muted); }
 .pdp .info .desc { color: var(--muted); margin: 14px 0; }
 .pdp .meta { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
-.pdp .meta .tag { background: var(--primary-light); color: var(--primary); padding: 6px 14px;
+.pdp .meta .tag { background: var(--primary-light); color: var(--primary-text); padding: 6px 14px;
   border-radius: 999px; font-weight: 700; font-size: .85rem; }
 .qty { display: inline-flex; align-items: center; border: 2px solid var(--line); border-radius: 999px; overflow: hidden; }
-.qty button { width: 40px; height: 40px; border: 0; background: #fff; font-size: 1.2rem; cursor: pointer; color: var(--primary); }
+.qty button { width: 40px; height: 40px; border: 0; background: #fff; font-size: 1.2rem; cursor: pointer; color: var(--primary-text); }
 .qty input { width: 46px; text-align: center; border: 0; font-family: inherit; font-size: 1rem; font-weight: 700; }
 .pdp-actions { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
 
@@ -455,7 +456,7 @@ select.select:hover, select.select:focus { color: var(--primary); background: va
 .form-grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
 .radio-cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
 .radio-card { border: 2px solid var(--line); border-radius: 12px; padding: 12px; cursor: pointer; font-weight: 700; font-size: .9rem; text-align: center; }
-.radio-card.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
+.radio-card.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary-text); }
 .field-error { color: var(--danger); font-size: .82rem; margin-top: 4px; display: none; }
 .field-error.show { display: block; }
 
@@ -506,7 +507,7 @@ select.select:hover, select.select:focus { color: var(--primary); background: va
 .page-head h1 { font-size: 2.1rem; font-weight: 900; letter-spacing: -.01em; }
 .page-head p { color: var(--muted); margin-top: 8px; }
 .breadcrumb { color: var(--muted); font-size: .88rem; margin-bottom: 18px; }
-.breadcrumb a:hover { color: var(--primary); }
+.breadcrumb a:hover { color: var(--primary-text); }
 .prose { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); }
 .prose h2 { margin: 22px 0 10px; font-size: 1.3rem; }
 .prose p { color: var(--muted); margin-bottom: 12px; }
@@ -776,7 +777,7 @@ select.select:focus { box-shadow: 0 0 0 4px rgba(216,121,67,.14); }
 .cart-row .thumb > span { filter: drop-shadow(0 8px 10px rgba(17,24,39,.2)); }
 .qty { box-shadow: inset 0 2px 6px rgba(17,24,39,.09); }
 .qty button { transition: background .15s, transform .15s, color .15s; }
-.qty button:hover { background: var(--primary-light); color: var(--primary); transform: translateY(-1px); }
+.qty button:hover { background: var(--primary-light); color: var(--primary-text); transform: translateY(-1px); }
 .free-note { box-shadow: 0 10px 22px rgba(22,163,74,.2); }
 .summary { position: sticky; }
 .summary::before {
