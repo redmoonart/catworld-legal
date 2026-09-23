@@ -262,12 +262,7 @@ ul { list-style: none; }
   overflow: hidden;
   box-shadow: 0 30px 70px rgba(17,24,39,.28);
 }
-.hero-key-img {
-  width: 100%; height: auto; display: block;
-  transform: scale(1.001);
-  animation: heroKen 18s ease-in-out infinite alternate;
-}
-@keyframes heroKen { from { transform: scale(1); } to { transform: scale(1.06); } }
+.hero-key-img { width: 100%; height: auto; display: block; }
 
 .hero-chip {
   position: absolute; bottom: -16px; inset-inline-start: -14px; z-index: 6;
@@ -291,13 +286,25 @@ ul { list-style: none; }
 .spark:nth-child(6){ top: 15%; left: 40%; animation-delay: 2.8s; }
 .spark:nth-child(7){ top: 70%; left: 62%; animation-delay: 1.4s; width: 8px; height: 8px; }
 .spark:nth-child(8){ top: 50%; left: 33%; animation-delay: .9s; width: 6px; height: 6px; }
-.floaty-emoji { position: absolute; font-size: 1.8rem; opacity: .9; filter: drop-shadow(0 6px 10px rgba(0,0,0,.25)); animation: drift 7s ease-in-out infinite; }
-.floaty-emoji.e1 { top: 14%; left: 46%; animation-delay: 0s; }
-.floaty-emoji.e2 { top: 66%; left: 40%; animation-delay: 1.5s; font-size: 1.5rem; }
-.floaty-emoji.e3 { top: 34%; left: 92%; animation-delay: .8s; }
-@keyframes drift { 0%,100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-16px) rotate(6deg); } }
-
 .btn.glow { box-shadow: 0 8px 20px rgba(216,121,67,.32); }
+
+/* ============================================================
+   أيقونات عائمة ثلاثية العمق (Cinematic Scroll — Phase 3A)
+   عناصر انتقال زخرفية بين الأقسام، مرتبطة بتقدّم الـscroll
+   ============================================================ */
+.float-ic {
+  position: absolute; pointer-events: none; line-height: 1; z-index: 3;
+  filter: drop-shadow(0 8px 14px rgba(17,24,39,.18));
+  will-change: transform;
+}
+.float-ic.depth-fg { z-index: 4; }
+.float-ic.depth-bg { z-index: 1; opacity: .75; filter: drop-shadow(0 6px 10px rgba(17,24,39,.12)) blur(.3px); }
+@media (max-width: 760px) {
+  .float-ic.decor-icon-extra { display: none; }
+}
+
+/* حاوية الأقسام التي تحتوي أيقونات عائمة — تمنع التمرير الأفقي الناتج عن حركتها */
+.icon-stage { position: relative; overflow: hidden; }
 
 /* شارة الشحن العلوية */
 .hero-ribbon { text-align: center; padding: 9px 14px; font-weight: 700; font-size: .92rem; color: #3a2a00;
@@ -326,7 +333,6 @@ ul { list-style: none; }
   .hero-chip { font-size: .78rem; padding: 8px 12px; bottom: -12px; }
   .hero-copy .hero-trust { gap: 10px; }
   .hero-cta .btn { flex: 1; }
-  .floaty-emoji { display: none; }
   .brand small { display: none; }
 }
 
@@ -877,6 +883,9 @@ select.select:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .add-btn.added, #pdp-add.added, .qty input.bump, .cart-row.row-enter, .line.total.flash .amount-flash { animation: none !important; }
+  .hero-scene { animation: none !important; }
+  .hero-float { animation: none !important; }
+  .spark { animation: none !important; opacity: 0 !important; }
 }
 
 /* ============================================================

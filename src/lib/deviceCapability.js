@@ -30,3 +30,13 @@ export function getHeroSceneTier() {
   if (isLowEndOrMobile()) return "lite";
   return "full";
 }
+
+/** true only for devices with an accurate pointer (mouse/trackpad) — excludes touchscreens */
+export function hasFinePointer() {
+  return typeof window !== "undefined" && !!window.matchMedia && window.matchMedia("(pointer: fine)").matches;
+}
+
+/** narrow viewport — used to scale down parallax/scroll-story movement amplitude on phones */
+export function isNarrowViewport() {
+  return typeof window !== "undefined" && window.innerWidth < 760;
+}
