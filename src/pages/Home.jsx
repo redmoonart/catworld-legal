@@ -4,6 +4,7 @@ import { PRODUCTS } from "../data/products";
 import ProductCard from "../components/ProductCard";
 import Reveal from "../components/Reveal";
 import RevealLink from "../components/RevealLink";
+import ScrollReveal from "../components/ScrollReveal";
 import Hero3D from "../components/Hero3D";
 
 const FEATURES = [
@@ -16,7 +17,9 @@ const FEATURES = [
 export default function Home() {
   const { t } = useI18n();
   const picks = PRODUCTS.filter((p) => p.badge || p.oldPrice).slice(0, 8);
-  const list = picks.length ? picks : PRODUCTS.slice(0, 8);
+  const featured = picks.length ? picks : PRODUCTS.slice(0, 8);
+  const schoolSupplies = PRODUCTS.filter((p) => p.category === "school").slice(0, 4);
+  const bestSellers = PRODUCTS.filter((p) => p.badge === "الأكثر مبيعاً").slice(0, 4);
 
   return (
     <>
@@ -55,13 +58,14 @@ export default function Home() {
         </div>
       </section>
 
+      {/* الفئات */}
       <section className="section">
         <div className="wrap">
-          <Reveal className="section-head">
+          <ScrollReveal className="section-head">
             <span className="kicker">{t("cats.kicker")}</span>
             <h2>{t("cats.title")}</h2>
             <p>{t("cats.sub")}</p>
-          </Reveal>
+          </ScrollReveal>
           <div className="cats">
             <RevealLink to="/shop?cat=toys" className="cat-card toys">
               <span className="em">🧸</span>
@@ -79,15 +83,16 @@ export default function Home() {
         </div>
       </section>
 
+      {/* منتجات مختارة */}
       <section className="section" style={{ background: "#fff" }}>
         <div className="wrap">
-          <Reveal className="section-head">
+          <ScrollReveal className="section-head">
             <span className="kicker">{t("picks.kicker")}</span>
             <h2>{t("picks.title")}</h2>
             <p>{t("picks.sub")}</p>
-          </Reveal>
+          </ScrollReveal>
           <Reveal className="products-grid" delay={0.1}>
-            {list.map((p) => (
+            {featured.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
           </Reveal>
@@ -97,6 +102,46 @@ export default function Home() {
         </div>
       </section>
 
+      {/* الأدوات المدرسية */}
+      {schoolSupplies.length > 0 && (
+        <section className="section">
+          <div className="wrap">
+            <ScrollReveal className="section-head">
+              <span className="kicker">{t("schoolsec.kicker")}</span>
+              <h2>{t("schoolsec.title")}</h2>
+              <p>{t("schoolsec.sub")}</p>
+            </ScrollReveal>
+            <Reveal className="products-grid" delay={0.1}>
+              {schoolSupplies.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </Reveal>
+            <div style={{ textAlign: "center", marginTop: 30 }}>
+              <Link to="/shop?cat=school" className="btn btn-ghost btn-lg">{t("schoolsec.viewall")}</Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* الأكثر مبيعاً */}
+      {bestSellers.length > 0 && (
+        <section className="section" style={{ background: "#fff" }}>
+          <div className="wrap">
+            <ScrollReveal className="section-head">
+              <span className="kicker">{t("best.kicker")}</span>
+              <h2>{t("best.title")}</h2>
+              <p>{t("best.sub")}</p>
+            </ScrollReveal>
+            <Reveal className="products-grid" delay={0.1}>
+              {bestSellers.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      {/* CTA نهائي */}
       <section className="section-sm">
         <div className="wrap">
           <Reveal className="cod-banner">

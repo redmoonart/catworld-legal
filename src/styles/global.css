@@ -146,6 +146,15 @@ ul { list-style: none; }
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 .cart-btn:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: 0 8px 18px rgba(216,121,67,.16); }
+
+.search-btn {
+  display: flex; align-items: center; justify-content: center;
+  background: #fff; color: var(--ink); width: 44px; height: 44px; padding: 0;
+  border-radius: 999px; font-size: 1.1rem; cursor: pointer; border: 1.5px solid var(--line);
+  box-shadow: 0 4px 12px rgba(17,24,39,.06);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.search-btn:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: 0 8px 18px rgba(216,121,67,.16); }
 .cart-btn .count {
   position: absolute; top: -7px; inset-inline-start: -7px;
   background: var(--accent); color: #fff;
@@ -628,9 +637,14 @@ body::before {
 .cats { perspective: 1400px; }
 .cat-card { transform-style: preserve-3d;
   border: 3px solid rgba(255,255,255,.35);
-  box-shadow: 0 22px 46px rgba(17,24,39,.24); }
+  box-shadow: 0 22px 46px rgba(17,24,39,.24);
+  transition: box-shadow .3s ease; cursor: pointer; }
+.cat-card:hover { box-shadow: 0 30px 60px rgba(17,24,39,.32); }
 .cat-card .em { transition: transform .4s ease; }
 .cat-card:hover .em { transform: scale(1.12) rotate(-6deg); }
+.cat-card .go { transition: transform .25s ease; }
+.cat-card:hover .go { transform: translateX(4px); }
+[dir="rtl"] .cat-card:hover .go { transform: translateX(-4px); }
 
 /* بطاقات المزايا — أيقونة نيومورفيك ثلاثية الأبعاد */
 .feature { position: relative; overflow: hidden;
@@ -805,7 +819,7 @@ textarea:focus-visible,
   outline-offset: 2px;
   border-radius: 8px;
 }
-.cart-btn:focus-visible, .lang-btn:focus-visible, .menu-toggle:focus-visible,
+.cart-btn:focus-visible, .lang-btn:focus-visible, .menu-toggle:focus-visible, .search-btn:focus-visible,
 .chip:focus-visible, .btn:focus-visible, .faq-toggle:focus-visible,
 .cat-card:focus-visible, .pcard a:focus-visible {
   outline: 3px solid var(--primary);
@@ -857,4 +871,123 @@ select.select:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .add-btn.added, #pdp-add.added, .qty input.bump, .cart-row.row-enter, .line.total.flash .amount-flash { animation: none !important; }
+}
+
+/* ============================================================
+   Cart Drawer — سلة سريعة منزلقة من الهيدر
+   ============================================================ */
+.cart-drawer-backdrop {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(17,24,39,.45); backdrop-filter: blur(2px);
+}
+.cart-drawer {
+  position: fixed; top: 0; bottom: 0; inset-inline-end: 0; z-index: 201;
+  width: min(420px, 100vw);
+  background: #fff; box-shadow: -20px 0 50px rgba(17,24,39,.25);
+  display: flex; flex-direction: column;
+}
+[dir="rtl"] .cart-drawer { box-shadow: 20px 0 50px rgba(17,24,39,.25); }
+.cart-drawer-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px; border-bottom: 1px solid var(--line); flex-shrink: 0;
+}
+.cart-drawer-head h3 { font-size: 1.1rem; }
+.cart-drawer-close {
+  width: 36px; height: 36px; border-radius: 999px; border: 1.5px solid var(--line);
+  background: #fff; cursor: pointer; font-size: 1rem; color: var(--muted);
+  transition: border-color .2s, color .2s;
+}
+.cart-drawer-close:hover { border-color: var(--primary); color: var(--primary-text); }
+
+.cart-drawer-list { flex: 1; overflow-y: auto; padding: 8px 20px; }
+.cart-drawer-row {
+  display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 12px; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid var(--line);
+}
+.cart-drawer-row:last-child { border-bottom: 0; }
+.cart-drawer-row .thumb {
+  width: 64px; height: 64px; border-radius: var(--radius-sm); overflow: hidden;
+  background: linear-gradient(135deg,#f3f0ff,#fff5ec); display: grid; place-items: center; font-size: 1.8rem;
+}
+.cart-drawer-row .thumb img { width: 100%; height: 100%; object-fit: cover; }
+.cart-drawer-info h4 { font-size: .92rem; line-height: 1.3; margin-bottom: 4px; }
+.cart-drawer-info .unit { color: var(--muted); font-size: .82rem; margin-bottom: 6px; }
+.cart-drawer-info .qty button { width: 28px; height: 28px; font-size: .9rem; }
+.cart-drawer-info .qty input { width: 30px; font-size: .85rem; }
+.cart-drawer-row .remove {
+  background: none; border: 0; cursor: pointer; font-size: 1rem; color: var(--muted);
+  transition: color .2s;
+}
+.cart-drawer-row .remove:hover { color: var(--danger); }
+
+.cart-drawer-foot { padding: 16px 20px 20px; border-top: 1px solid var(--line); flex-shrink: 0; }
+.cart-drawer-foot .line { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.05rem; margin-bottom: 6px; }
+.cart-drawer-note { color: var(--muted); font-size: .8rem; margin-bottom: 14px; }
+
+.cart-drawer-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 40px 20px; text-align: center; }
+.cart-drawer-empty .em { font-size: 3rem; }
+.cart-drawer-empty p { color: var(--muted); }
+
+@media (max-width: 480px) {
+  .cart-drawer { width: 100vw; }
+}
+
+/* ============================================================
+   Search Overlay — بحث سريع من الهيدر
+   ============================================================ */
+.search-overlay {
+  position: fixed; inset: 0; z-index: 210;
+  background: rgba(17,24,39,.45); backdrop-filter: blur(2px);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 90px 20px 20px;
+}
+.search-overlay-panel {
+  width: min(620px, 100%); max-height: min(70vh, 560px);
+  background: #fff; border-radius: var(--radius, 12px);
+  box-shadow: 0 30px 70px rgba(17,24,39,.32);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.search-overlay-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 18px; border-bottom: 1px solid var(--line); flex-shrink: 0;
+}
+.search-overlay-bar .ic { font-size: 1.1rem; color: var(--muted); flex-shrink: 0; }
+.search-overlay-bar input {
+  flex: 1; border: 0; outline: 0; background: none;
+  font-family: inherit; font-size: 1.05rem; color: var(--ink);
+}
+.search-overlay-bar input::placeholder { color: var(--muted); }
+.search-overlay-close {
+  width: 32px; height: 32px; border-radius: 999px; border: 1.5px solid var(--line);
+  background: #fff; cursor: pointer; font-size: .9rem; color: var(--muted); flex-shrink: 0;
+  transition: border-color .2s, color .2s;
+}
+.search-overlay-close:hover { border-color: var(--primary); color: var(--primary-text); }
+
+.search-overlay-results { flex: 1; overflow-y: auto; padding: 8px; }
+.search-result-row {
+  width: 100%; display: flex; align-items: center; gap: 14px;
+  padding: 10px; border-radius: 10px; border: 0; background: none; cursor: pointer;
+  text-align: start; transition: background .15s;
+}
+.search-result-row:hover, .search-result-row:focus-visible { background: var(--primary-light); }
+.search-result-row .thumb {
+  width: 52px; height: 52px; border-radius: var(--radius-sm); overflow: hidden; flex-shrink: 0;
+  background: linear-gradient(135deg,#f3f0ff,#fff5ec); display: grid; place-items: center; font-size: 1.5rem;
+}
+.search-result-row .thumb img { width: 100%; height: 100%; object-fit: cover; }
+.search-result-row .info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.search-result-row .name {
+  font-weight: 700; font-size: .95rem; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.search-result-row .price { color: var(--primary-text); font-weight: 800; font-size: .85rem; }
+
+.search-overlay-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 40px 20px; text-align: center; }
+.search-overlay-empty .em { font-size: 2.6rem; }
+.search-overlay-empty p { color: var(--muted); }
+
+@media (max-width: 480px) {
+  .search-overlay { padding: 0; align-items: stretch; }
+  .search-overlay-panel { width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
 }

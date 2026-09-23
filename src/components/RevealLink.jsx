@@ -8,6 +8,8 @@ export default function RevealLink({ children, delay = 0, y = 24, ...rest }) {
     <MotionLink
       initial={{ opacity: 0, y, scale: 0.94 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={{ y: -6, scale: 1.015 }}
+      whileTap={{ scale: 0.98 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ type: "spring", stiffness: 260, damping: 22, delay }}
       {...rest}

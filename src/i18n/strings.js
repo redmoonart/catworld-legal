@@ -15,7 +15,7 @@ export const STR = {
       // التنقل
       "nav.home": "الرئيسية", "nav.shop": "المتجر", "nav.toys": "الألعاب",
       "nav.school": "الأدوات المدرسية", "nav.about": "من نحن", "nav.contact": "اتصل بنا",
-      "aria.cart": "السلة", "aria.menu": "القائمة", "aria.wa": "واتساب", "aria.lang": "اللغة",
+      "aria.cart": "السلة", "aria.menu": "القائمة", "aria.wa": "واتساب", "aria.lang": "اللغة", "aria.search": "بحث",
       // الهيرو
       "hero.title": 'عالم <span class="hl">الألعاب</span> والأدوات المدرسية<br>بين يديك في الجزائر',
       "hero.lead": "تشكيلة مختارة من ألعاب الأطفال والمستلزمات المدرسية بجودة عالية وأسعار في المتناول. اطلب الآن وادفع عند الاستلام أينما كنت في الوطن.",
@@ -33,6 +33,8 @@ export const STR = {
       "cats.school_t": "الأدوات المدرسية", "cats.school_d": "محافظ، أقلام، كراريس، أدوات هندسة وفنون", "cats.school_go": "تصفّح الأدوات ←",
       // منتجات مختارة
       "picks.kicker": "الأكثر رواجاً", "picks.title": "منتجات مختارة لك", "picks.sub": "عروض وأحدث الإضافات", "picks.viewall": "عرض كل المنتجات",
+      "schoolsec.kicker": "الموسم الدراسي", "schoolsec.title": "كل ما يحتاجه طفلك للمدرسة", "schoolsec.sub": "حقائب، أقلام، دفاتر وأدوات مدرسية مختارة", "schoolsec.viewall": "تصفّح الأدوات المدرسية",
+      "best.kicker": "الأكثر طلباً", "best.title": "المفضّلة لدى العائلات", "best.sub": "المنتجات التي يثق بها الآباء والأمهات أكثر",
       // شريط الدفع
       "cod.title": "الدفع عند الاستلام في كل الجزائر", "cod.text": "لا حاجة لبطاقة بنكية — عايِن طلبك ثم ادفع نقداً لعامل التوصيل.", "cod.btn": "اطلب الآن",
       // الفوتر
@@ -112,7 +114,7 @@ export const STR = {
       "ribbon": "🚚 Livraison dans les 58 wilayas · 💵 Paiement à la livraison · 🇩🇿 Algérie",
       "nav.home": "Accueil", "nav.shop": "Boutique", "nav.toys": "Jouets",
       "nav.school": "Fournitures scolaires", "nav.about": "À propos", "nav.contact": "Contact",
-      "aria.cart": "Panier", "aria.menu": "Menu", "aria.wa": "WhatsApp", "aria.lang": "Langue",
+      "aria.cart": "Panier", "aria.menu": "Menu", "aria.wa": "WhatsApp", "aria.lang": "Langue", "aria.search": "Recherche",
       "hero.title": 'Le monde des <span class="hl">jouets</span> et fournitures scolaires<br>à portée de main en Algérie',
       "hero.lead": "Une sélection de jouets pour enfants et de fournitures scolaires de qualité à prix abordables. Commandez maintenant et payez à la livraison partout en Algérie.",
       "hero.cta_shop": "🛍️ Acheter maintenant", "hero.cta_school": "🎒 Fournitures scolaires",
@@ -126,6 +128,8 @@ export const STR = {
       "cats.toys_t": "Jouets pour enfants", "cats.toys_d": "Voitures, poupées, cubes, jeux éducatifs et plus", "cats.toys_go": "Voir les jouets →",
       "cats.school_t": "Fournitures scolaires", "cats.school_d": "Cartables, stylos, cahiers, géométrie et arts", "cats.school_go": "Voir les fournitures →",
       "picks.kicker": "Les plus populaires", "picks.title": "Une sélection pour vous", "picks.sub": "Promos et nouveautés", "picks.viewall": "Voir tous les produits",
+      "schoolsec.kicker": "Rentrée scolaire", "schoolsec.title": "Tout ce qu'il faut pour l'école", "schoolsec.sub": "Cartables, stylos, cahiers et fournitures sélectionnées", "schoolsec.viewall": "Voir les fournitures scolaires",
+      "best.kicker": "Les plus demandés", "best.title": "Les favoris des familles", "best.sub": "Les produits auxquels les parents font le plus confiance",
       "cod.title": "Paiement à la livraison partout en Algérie", "cod.text": "Pas besoin de carte bancaire — vérifiez votre commande puis payez en espèces au livreur.", "cod.btn": "Commander",
       "footer.about": "Votre boutique de référence pour les jouets et fournitures scolaires en Algérie. Qualité de confiance et prix abordables.",
       "footer.quicklinks": "Liens rapides", "footer.store": "La boutique", "footer.contact_us": "Nous contacter",
@@ -196,7 +200,7 @@ export const STR = {
       "ribbon": "🚚 Delivery to all 58 wilayas · 💵 Cash on delivery · 🇩🇿 Algeria",
       "nav.home": "Home", "nav.shop": "Shop", "nav.toys": "Toys",
       "nav.school": "School Supplies", "nav.about": "About", "nav.contact": "Contact",
-      "aria.cart": "Cart", "aria.menu": "Menu", "aria.wa": "WhatsApp", "aria.lang": "Language",
+      "aria.cart": "Cart", "aria.menu": "Menu", "aria.wa": "WhatsApp", "aria.lang": "Language", "aria.search": "Search",
       "hero.title": 'The world of <span class="hl">toys</span> and school supplies<br>at your fingertips in Algeria',
       "hero.lead": "A curated selection of kids' toys and school supplies at great quality and affordable prices. Order now and pay on delivery anywhere in Algeria.",
       "hero.cta_shop": "🛍️ Shop now", "hero.cta_school": "🎒 School Supplies",
@@ -210,6 +214,8 @@ export const STR = {
       "cats.toys_t": "Kids' toys", "cats.toys_d": "Cars, dolls, blocks, educational toys and more", "cats.toys_go": "Browse toys →",
       "cats.school_t": "School supplies", "cats.school_d": "Backpacks, pens, notebooks, geometry and arts", "cats.school_go": "Browse supplies →",
       "picks.kicker": "Most popular", "picks.title": "Picked for you", "picks.sub": "Deals and latest additions", "picks.viewall": "View all products",
+      "schoolsec.kicker": "Back to school", "schoolsec.title": "Everything for the school year", "schoolsec.sub": "Backpacks, pens, notebooks and curated school supplies", "schoolsec.viewall": "Browse school supplies",
+      "best.kicker": "Most requested", "best.title": "Family favorites", "best.sub": "The products parents trust the most",
       "cod.title": "Cash on delivery across Algeria", "cod.text": "No bank card needed — inspect your order, then pay the courier in cash.", "cod.btn": "Order now",
       "footer.about": "Your go-to store for kids' toys and school supplies in Algeria. Quality you can trust at affordable prices.",
       "footer.quicklinks": "Quick links", "footer.store": "Store", "footer.contact_us": "Contact us",

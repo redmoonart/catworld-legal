@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import WhatsAppFloat from "./components/WhatsAppFloat";
+import CartDrawer from "./components/CartDrawer";
+import { useCart } from "./cart/CartContext";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Product from "./pages/Product";
@@ -12,9 +14,11 @@ import Contact from "./pages/Contact";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+  const { closeDrawer } = useCart();
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [pathname]);
+    closeDrawer();
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 
@@ -33,6 +37,7 @@ export default function App() {
       </Routes>
       <Footer />
       <WhatsAppFloat />
+      <CartDrawer />
     </>
   );
 }

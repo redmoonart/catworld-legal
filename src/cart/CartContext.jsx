@@ -23,6 +23,9 @@ export function CartProvider({ children }) {
   const { lang } = useI18n();
   const showToast = useToast();
   const [cart, setCart] = useState(loadCart);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const openDrawer = useCallback(() => setDrawerOpen(true), []);
+  const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
   useEffect(() => {
     try {
@@ -67,8 +70,8 @@ export function CartProvider({ children }) {
   );
 
   const value = useMemo(
-    () => ({ cart, addToCart, setQty, removeFromCart, count, subtotal, byId }),
-    [cart, addToCart, setQty, removeFromCart, count, subtotal]
+    () => ({ cart, addToCart, setQty, removeFromCart, count, subtotal, byId, drawerOpen, openDrawer, closeDrawer }),
+    [cart, addToCart, setQty, removeFromCart, count, subtotal, drawerOpen, openDrawer, closeDrawer]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

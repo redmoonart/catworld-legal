@@ -1,7 +1,9 @@
-import { useRef, lazy, Suspense } from "react";
+import { useRef, useState, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useI18n, Trans } from "../i18n/I18nContext";
+import { getHeroSceneTier } from "../lib/deviceCapability";
+import WebGLErrorBoundary from "./WebGLErrorBoundary";
 import heroImg from "../assets/hero.png";
 
 const HeroToys3D = lazy(() => import("./HeroToys3D"));
@@ -18,6 +20,7 @@ const item = {
 export default function Hero3D() {
   const { t } = useI18n();
   const ref = useRef(null);
+  const [sceneTier] = useState(getHeroSceneTier);
   const tx = useMotionValue(0);
   const ty = useMotionValue(0);
   const stx = useSpring(tx, { stiffness: 120, damping: 20 });
@@ -98,11 +101,15 @@ export default function Hero3D() {
                     <span className="floaty-emoji e3">🚀</span>
                   </motion.div>
                 </motion.div>
-                <div className="hero-toys-layer" aria-hidden="true">
-                  <Suspense fallback={null}>
-                    <HeroToys3D tx={stx} ty={sty} />
-                  </Suspense>
-                </div>
+                {sceneTier !== "off" && (
+                  <div className="hero-toys-layer" aria-hidden="true">
+                    <WebGLErrorBoundary>
+                      <Suspense fallback={null}>
+                        <HeroToys3D tx={stx} ty={sty} quality={sceneTier} />
+                      </Suspense>
+                    </WebGLErrorBoundary>
+                  </div>
+                )}
               </div>
             </motion.div>
             <motion.div

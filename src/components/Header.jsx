@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useI18n } from "../i18n/I18nContext";
 import { useCart } from "../cart/CartContext";
 import { STORE_CONFIG } from "../data/config";
+import SearchOverlay from "./SearchOverlay";
 
 const LANGS = [
   { code: "ar", label: "العربية" },
@@ -12,11 +13,12 @@ const LANGS = [
 
 export default function Header() {
   const { t, setLang, meta } = useI18n();
-  const { count } = useCart();
+  const { count, openDrawer } = useCart();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -40,6 +42,7 @@ export default function Header() {
       if (e.key === "Escape") {
         setMenuOpen(false);
         setLangOpen(false);
+        setSearchOpen(false);
       }
     }
     window.addEventListener("resize", onResize);
@@ -106,14 +109,34 @@ export default function Header() {
               ))}
             </div>
           </div>
-          <Link to="/cart" className="cart-btn" aria-label={t("aria.cart")} onClick={closeMenu}>
+          <button
+            type="button"
+            className="search-btn"
+            aria-label={t("aria.search")}
+            onClick={() => {
+              closeMenu();
+              setSearchOpen(true);
+            }}
+          >
+            🔍
+          </button>
+          <button
+            type="button"
+            className="cart-btn"
+            aria-label={t("aria.cart")}
+            onClick={() => {
+              closeMenu();
+              openDrawer();
+            }}
+          >
             🛒<span className="count cart-count" style={{ display: count > 0 ? "grid" : "none" }}>{count}</span>
-          </Link>
+          </button>
           <button className="menu-toggle" aria-label={t("aria.menu")} onClick={() => setMenuOpen((o) => !o)}>
             {menuOpen ? "✕" : "☰"}
           </button>
         </div>
       </div>
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }
