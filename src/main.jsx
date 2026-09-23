@@ -5,6 +5,7 @@ import App from "./App";
 import AppErrorBoundary from "./components/AppErrorBoundary";
 import { I18nProvider } from "./i18n/I18nContext";
 import { ToastProvider } from "./toast/ToastContext";
+import { ProductsProvider } from "./data/ProductsContext";
 import { CartProvider } from "./cart/CartContext";
 import "./styles/global.css";
 
@@ -14,9 +15,11 @@ createRoot(document.getElementById("root")).render(
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <I18nProvider>
           <ToastProvider>
-            <CartProvider>
-              <App />
-            </CartProvider>
+            <ProductsProvider>
+              <CartProvider>
+                <App />
+              </CartProvider>
+            </ProductsProvider>
           </ToastProvider>
         </I18nProvider>
       </BrowserRouter>

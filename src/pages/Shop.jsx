@@ -1,13 +1,14 @@
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useI18n } from "../i18n/I18nContext";
-import { PRODUCTS } from "../data/products";
+import { useProducts } from "../data/ProductsContext";
 import ProductCard from "../components/ProductCard";
 import PageHead from "../components/PageHead";
 import { pName } from "../lib/product";
 
 export default function Shop() {
   const { t, lang } = useI18n();
+  const { products } = useProducts();
   const [searchParams, setSearchParams] = useSearchParams();
   const [cat, setCat] = useState(searchParams.get("cat") || "all");
   const subcat = searchParams.get("subcat") || "";
@@ -24,7 +25,7 @@ export default function Shop() {
   }
 
   const list = useMemo(() => {
-    let l = PRODUCTS.slice();
+    let l = products.slice();
     if (cat !== "all") l = l.filter((p) => p.category === cat);
     if (subcat) l = l.filter((p) => p.subCategory === subcat);
     if (q) {
@@ -37,7 +38,7 @@ export default function Shop() {
     else if (sort === "price-desc") l.sort((a, b) => b.price - a.price);
     else if (sort === "name") l.sort((a, b) => pName(a, lang).localeCompare(pName(b, lang), lang));
     return l;
-  }, [cat, q, sort, lang]);
+  }, [products, cat, subcat, q, sort, lang]);
 
   return (
     <>

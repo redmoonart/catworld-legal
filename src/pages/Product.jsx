@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useI18n } from "../i18n/I18nContext";
 import { useCart } from "../cart/CartContext";
-import { PRODUCTS } from "../data/products";
+import { useProducts } from "../data/ProductsContext";
 import { STORE_CONFIG } from "../data/config";
 import ProductCard from "../components/ProductCard";
 import TiltCard from "../components/TiltCard";
@@ -14,9 +14,10 @@ export default function Product() {
   const { id } = useParams();
   const { t, lang } = useI18n();
   const { addToCart } = useCart();
+  const { products, loading } = useProducts();
   const [qty, setQty] = useState(1);
 
-  const p = PRODUCTS.find((x) => x.id === Number(id));
+  const p = products.find((x) => x.id === Number(id));
 
   useEffect(() => {
     setQty(1);
@@ -24,6 +25,7 @@ export default function Product() {
   }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!p) {
+    if (loading) return null;
     return (
       <section className="section">
         <div className="wrap">
@@ -41,7 +43,7 @@ export default function Product() {
   const catLabel = t(p.category === "toys" ? "card.toys" : "card.school");
   const disc = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
   const out = p.stock === false;
-  const related = PRODUCTS.filter((x) => x.category === p.category && x.id !== p.id).slice(0, 4);
+  const related = products.filter((x) => x.category === p.category && x.id !== p.id).slice(0, 4);
 
   function handleAdd() {
     addToCart(p.id, qty);
