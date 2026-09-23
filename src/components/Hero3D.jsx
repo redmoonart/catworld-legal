@@ -51,7 +51,7 @@ export default function Hero3D() {
             </motion.h1>
             <motion.p className="lead" variants={item}>{t("hero.lead")}</motion.p>
             <motion.div className="hero-cta" variants={item}>
-              <Link to="/shop" className="btn btn-accent btn-lg glow">{t("hero.cta_shop")}</Link>
+              <Link to="/shop" className="btn btn-primary btn-lg glow">{t("hero.cta_shop")}</Link>
               <Link to="/shop?cat=school" className="btn btn-ghost btn-lg">{t("hero.cta_school")}</Link>
             </motion.div>
             <motion.div className="hero-trust" variants={item}>

@@ -49,30 +49,30 @@ export default function HeroToys3D({ tx, ty }) {
     >
       <ambientLight intensity={0.75} />
       <directionalLight position={[3, 4, 5]} intensity={1.15} />
-      <directionalLight position={[-3, -2, -4]} intensity={0.35} color="#8fb4ff" />
+      <directionalLight position={[-3, -2, -4]} intensity={0.35} color="#f7e8e0" />
 
       <SceneRig tx={tx} ty={ty}>
         <SpinningShape position={[-2.7, 1.5, 0]} speed={0.5}>
           <RoundedBox args={[0.9, 0.9, 0.9]} radius={0.16} smoothness={4}>
-            <meshStandardMaterial color="#0d9488" roughness={0.35} metalness={0.05} />
+            <meshStandardMaterial color="#527575" roughness={0.35} metalness={0.05} />
           </RoundedBox>
         </SpinningShape>
 
         <SpinningShape position={[2.8, 1.15, -0.3]} speed={0.35} floatSpeed={1.1}>
           <Sphere args={[0.55, 32, 32]}>
-            <meshStandardMaterial color="#e8720a" roughness={0.3} metalness={0.05} />
+            <meshStandardMaterial color="#d87943" roughness={0.3} metalness={0.05} />
           </Sphere>
         </SpinningShape>
 
         <SpinningShape position={[-2.35, -1.55, 0.2]} speed={0.6} floatSpeed={1.7}>
           <Torus args={[0.5, 0.2, 20, 40]}>
-            <meshStandardMaterial color="#2a4bdb" roughness={0.35} metalness={0.05} />
+            <meshStandardMaterial color="#b8632f" roughness={0.35} metalness={0.05} />
           </Torus>
         </SpinningShape>
 
         <SpinningShape position={[2.5, -1.65, -0.2]} speed={0.45} floatSpeed={1.3}>
           <Cone args={[0.55, 0.9, 32]}>
-            <meshStandardMaterial color="#0b0d12" roughness={0.4} metalness={0.05} />
+            <meshStandardMaterial color="#111827" roughness={0.4} metalness={0.05} />
           </Cone>
         </SpinningShape>
       </SceneRig>
