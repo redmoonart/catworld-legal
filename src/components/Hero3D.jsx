@@ -4,7 +4,7 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useI18n, Trans } from "../i18n/I18nContext";
 import { getHeroSceneTier } from "../lib/deviceCapability";
 import WebGLErrorBoundary from "./WebGLErrorBoundary";
-import heroImg from "../assets/hero.png";
+import heroImg from "../assets/hero.webp";
 
 const HeroToys3D = lazy(() => import("./HeroToys3D"));
 

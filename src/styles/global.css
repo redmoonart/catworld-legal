@@ -305,7 +305,7 @@ ul { list-style: none; }
 
 /* صورة الشعار (رأس الثعلب) بدل الإيموجي */
 .brand .logo.logo-img {
-  background-image: url("../assets/hero.png");
+  background-image: url("../assets/hero.webp");
   background-repeat: no-repeat;
   background-size: 300%;
   background-position: 18% 30%;
@@ -595,6 +595,12 @@ select.select:hover, select.select:focus { color: var(--primary-text); backgroun
   .products-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
   .pcard .thumb { font-size: 3.4rem; }
   .hero h1 { font-size: 1.7rem; }
+
+  /* شريط الأزرار في الهيدر ضيّق جداً على الهواتف الصغيرة —
+     نحوّل مبدّل اللغة إلى زر أيقونة فقط لتوفير مساحة ونمنع التمرير الأفقي */
+  .header-actions { gap: 6px; }
+  .lang-btn { width: 44px; padding: 0; justify-content: center; }
+  .lang-btn span { display: none; }
 }
 
 /* ============================================================
