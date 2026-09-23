@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import WhatsAppFloat from "./components/WhatsAppFloat";
@@ -11,6 +11,11 @@ import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import { AdminAuthProvider } from "./admin/AdminAuthContext";
+import RequireAdmin from "./admin/RequireAdmin";
+
+const AdminLogin = lazy(() => import("./pages/AdminLogin"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -23,6 +28,29 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith("/admin");
+
+  if (isAdmin) {
+    return (
+      <AdminAuthProvider>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route
+              path="/admin"
+              element={
+                <RequireAdmin>
+                  <AdminDashboard />
+                </RequireAdmin>
+              }
+            />
+          </Routes>
+        </Suspense>
+      </AdminAuthProvider>
+    );
+  }
+
   return (
     <>
       <ScrollToTop />

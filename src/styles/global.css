@@ -1065,3 +1065,70 @@ select.select:focus-visible {
   .search-overlay { padding: 0; align-items: stretch; }
   .search-overlay-panel { width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
 }
+
+/* ============================================================
+   Admin dashboard — internal tool, not part of the trilingual
+   public design system, so it stays Arabic-only / simple.
+   ============================================================ */
+
+.admin-auth-screen {
+  min-height: 80vh; display: grid; place-items: center; padding: 24px;
+}
+.admin-auth-card {
+  width: 100%; max-width: 380px; background: #fff; border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 32px 28px; box-shadow: 0 12px 30px rgba(17,24,39,.08);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.admin-auth-card h1 { font-size: 1.3rem; margin: 0; }
+.admin-auth-sub { color: var(--muted); margin: -8px 0 4px; font-size: .9rem; }
+.admin-auth-card label { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: .9rem; }
+.admin-auth-card input {
+  font-family: inherit; font-size: 1rem; padding: 10px 12px; border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm); background: var(--bg);
+}
+.admin-auth-error { color: #c0392b; font-size: .88rem; margin: 0; }
+
+.admin-dashboard { max-width: 1100px; margin: 0 auto; padding: 28px 20px 60px; }
+.admin-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 12px; }
+.admin-topbar h1 { font-size: 1.3rem; margin: 0; }
+
+.admin-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.admin-search {
+  font-family: inherit; font-size: .95rem; padding: 9px 14px; border: 1.5px solid var(--line);
+  border-radius: 999px; background: #fff; min-width: 220px;
+}
+
+.admin-table-wrap { overflow-x: auto; background: #fff; border-radius: var(--radius); border: 1px solid var(--line); }
+.admin-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.admin-table th, .admin-table td { padding: 10px 12px; text-align: start; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.admin-table th { color: var(--muted); font-weight: 700; font-size: .82rem; }
+.admin-table tbody tr:hover { background: var(--bg); }
+.admin-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: var(--radius-sm); }
+.admin-emoji { font-size: 1.4rem; }
+.admin-old-price { color: var(--muted); text-decoration: line-through; font-size: .82rem; }
+.admin-row-actions { display: flex; gap: 6px; }
+.btn-sm { padding: 6px 12px; font-size: .82rem; }
+.admin-danger { color: #c0392b; border-color: #f0c4be; }
+.admin-danger:hover { background: #fdecea; border-color: #c0392b; color: #c0392b; }
+
+.admin-form {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 24px; display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px;
+}
+.admin-form h3 { margin: 0; font-size: 1.1rem; }
+.admin-form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.admin-span-2 { grid-column: span 2; }
+.admin-span-3 { grid-column: span 3; }
+.admin-form label { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: .85rem; color: var(--muted); }
+.admin-form input, .admin-form select, .admin-form textarea {
+  font-family: inherit; font-size: .92rem; padding: 9px 11px; border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm); background: var(--bg); color: var(--ink); font-weight: 500; resize: vertical;
+}
+.admin-checkbox { flex-direction: row !important; align-items: center; gap: 8px !important; }
+.admin-checkbox input { width: auto; padding: 0; }
+.admin-form-actions { display: flex; gap: 10px; }
+
+@media (max-width: 760px) {
+  .admin-form-grid { grid-template-columns: 1fr; }
+  .admin-span-2, .admin-span-3 { grid-column: span 1; }
+}

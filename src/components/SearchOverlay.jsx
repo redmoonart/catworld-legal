@@ -2,13 +2,14 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useI18n } from "../i18n/I18nContext";
-import { PRODUCTS } from "../data/products";
+import { useProducts } from "../data/ProductsContext";
 import { STORE_CONFIG } from "../data/config";
 import { pName } from "../lib/product";
 import { fmt } from "../lib/format";
 
 export default function SearchOverlay({ open, onClose }) {
   const { t, lang } = useI18n();
+  const { products } = useProducts();
   const navigate = useNavigate();
   const [q, setQ] = useState("");
   const inputRef = useRef(null);
@@ -36,10 +37,10 @@ export default function SearchOverlay({ open, onClose }) {
   const results = useMemo(() => {
     const qq = q.trim().toLowerCase();
     if (!qq) return [];
-    return PRODUCTS.filter((p) =>
+    return products.filter((p) =>
       [p.name, p.nameFr, p.nameEn, p.desc, p.descFr, p.descEn].some((s) => (s || "").toLowerCase().includes(qq))
     ).slice(0, 8);
-  }, [q]);
+  }, [products, q]);
 
   function goToProduct(id) {
     onClose();

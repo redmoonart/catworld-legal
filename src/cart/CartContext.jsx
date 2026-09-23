@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
-import { PRODUCTS } from "../data/products";
+import { useProducts } from "../data/ProductsContext";
 import { useI18n } from "../i18n/I18nContext";
 import { useToast } from "../toast/ToastContext";
 import { pName } from "../lib/product";
@@ -15,13 +15,11 @@ function loadCart() {
   }
 }
 
-function byId(id) {
-  return PRODUCTS.find((p) => p.id === Number(id));
-}
-
 export function CartProvider({ children }) {
   const { lang } = useI18n();
   const showToast = useToast();
+  const { products } = useProducts();
+  const byId = useCallback((id) => products.find((p) => p.id === Number(id)), [products]);
   const [cart, setCart] = useState(loadCart);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const openDrawer = useCallback(() => setDrawerOpen(true), []);
@@ -46,7 +44,7 @@ export function CartProvider({ children }) {
       });
       showToast(`✅ ${pName(p, lang)}`);
     },
-    [lang, showToast]
+    [byId, lang, showToast]
   );
 
   const setQty = useCallback((id, qty) => {
@@ -66,12 +64,12 @@ export function CartProvider({ children }) {
       const p = byId(i.id);
       return p ? s + p.price * i.qty : s;
     }, 0),
-    [cart]
+    [cart, byId]
   );
 
   const value = useMemo(
     () => ({ cart, addToCart, setQty, removeFromCart, count, subtotal, byId, drawerOpen, openDrawer, closeDrawer }),
-    [cart, addToCart, setQty, removeFromCart, count, subtotal, drawerOpen, openDrawer, closeDrawer]
+    [cart, addToCart, setQty, removeFromCart, count, subtotal, byId, drawerOpen, openDrawer, closeDrawer]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

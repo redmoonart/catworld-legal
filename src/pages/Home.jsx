@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useScroll } from "framer-motion";
 import { useI18n } from "../i18n/I18nContext";
-import { PRODUCTS } from "../data/products";
+import { useProducts } from "../data/ProductsContext";
 import ProductCard from "../components/ProductCard";
 import Reveal from "../components/Reveal";
 import RevealLink from "../components/RevealLink";
@@ -32,10 +32,11 @@ const CAT_STRIP = [
 
 export default function Home() {
   const { t, meta } = useI18n();
-  const picks = PRODUCTS.filter((p) => p.badge || p.oldPrice).slice(0, 8);
-  const featured = picks.length ? picks : PRODUCTS.slice(0, 8);
-  const schoolSupplies = PRODUCTS.filter((p) => p.category === "school").slice(0, 4);
-  const bestSellers = PRODUCTS.filter((p) => p.badge === "الأكثر مبيعاً").slice(0, 4);
+  const { products } = useProducts();
+  const picks = products.filter((p) => p.badge || p.oldPrice).slice(0, 8);
+  const featured = picks.length ? picks : products.slice(0, 8);
+  const schoolSupplies = products.filter((p) => p.category === "school").slice(0, 4);
+  const bestSellers = products.filter((p) => p.badge === "الأكثر مبيعاً").slice(0, 4);
 
   const catsRef = useRef(null);
   const { scrollYProgress: catsScroll } = useScroll({ target: catsRef, offset: ["start 85%", "end 30%"] });
