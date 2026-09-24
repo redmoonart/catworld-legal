@@ -47,12 +47,32 @@ export default function ProductForm({ initial, nextId, onCancel, onSaved }) {
   const [f, setF] = useState(() => (initial ? { ...BLANK, ...initial } : { ...BLANK, id: nextId }));
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   function set(key) {
     return (e) => {
       const v = e.target.type === "checkbox" ? e.target.checked : e.target.value;
       setF((prev) => ({ ...prev, [key]: v }));
     };
+  }
+
+  async function handleFileChange(e) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setError("");
+    setUploading(true);
+    const ext = file.name.split(".").pop();
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error: upErr } = await supabase.storage.from("product-images").upload(path, file);
+    if (upErr) {
+      setUploading(false);
+      setError("فشل رفع الصورة: " + upErr.message);
+      return;
+    }
+    const { data } = supabase.storage.from("product-images").getPublicUrl(path);
+    setF((prev) => ({ ...prev, image: data.publicUrl }));
+    setUploading(false);
   }
 
   async function handleSubmit(e) {
@@ -98,8 +118,26 @@ export default function ProductForm({ initial, nextId, onCancel, onSaved }) {
           <input type="text" value={f.emoji} onChange={set("emoji")} placeholder="🧸" />
         </label>
         <label className="admin-span-2">
-          رابط الصورة (اختياري — إن تُرك فارغاً يظهر الإيموجي)
-          <input type="text" value={f.image} onChange={set("image")} placeholder="https://..." />
+          صورة المنتج (اختياري — إن تُركت فارغة يظهر الإيموجي)
+          <div className="admin-image-row">
+            {f.image && <img src={f.image} alt="" className="admin-image-preview" />}
+            <div className="admin-image-controls">
+              <input type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
+              {uploading && <span className="admin-uploading">جارٍ الرفع...</span>}
+              {f.image && !uploading && (
+                <button type="button" className="btn btn-ghost btn-sm" onClick={() => setF((prev) => ({ ...prev, image: "" }))}>
+                  إزالة الصورة
+                </button>
+              )}
+              <input
+                type="text"
+                value={f.image}
+                onChange={set("image")}
+                placeholder="أو الصق رابط صورة مباشرة"
+                className="admin-image-url"
+              />
+            </div>
+          </div>
         </label>
       </div>
 

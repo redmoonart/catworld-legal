@@ -3,7 +3,9 @@
 -- SQL Editor: https://app.supabase.com/project/_/sql/new)
 -- Creates the products table, enables Row Level Security so
 -- everyone can read products but only a signed-in admin can
--- write, and seeds it with the current 24-product catalog.
+-- write, seeds it with the current 24-product catalog, and sets
+-- up a public "product-images" storage bucket for the admin
+-- dashboard's image upload.
 -- ============================================================
 
 create table if not exists public.products (
@@ -74,3 +76,28 @@ values
   (212, 'school', 'backpacks', '🧳', NULL, 'حقيبة عجلات مدرسية', 'Cartable à roulettes', 'Rolling school bag', 'حقيبة بعجلات ومقبض قابل للسحب، تخفف الحمل عن ظهر الطفل، متينة وأنيقة.', 'Cartable à roulettes avec poignée télescopique, qui allège le dos de l''enfant — solide et élégant.', 'A wheeled bag with a pull-out handle that eases the load on a child''s back — sturdy and stylish.', 5200, 6000, 'الأكثر مبيعاً', NULL, true)
 on conflict (id) do nothing;
 
+
+-- ------------------------------------------------------------
+-- Storage bucket for product images (uploaded from the admin
+-- dashboard). Public read so product photos show on the site,
+-- write restricted to a signed-in admin.
+-- ------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('product-images', 'product-images', true)
+on conflict (id) do nothing;
+
+drop policy if exists "Public read product images" on storage.objects;
+create policy "Public read product images" on storage.objects
+  for select using (bucket_id = 'product-images');
+
+drop policy if exists "Admins can upload product images" on storage.objects;
+create policy "Admins can upload product images" on storage.objects
+  for insert to authenticated with check (bucket_id = 'product-images');
+
+drop policy if exists "Admins can update product images" on storage.objects;
+create policy "Admins can update product images" on storage.objects
+  for update to authenticated using (bucket_id = 'product-images');
+
+drop policy if exists "Admins can delete product images" on storage.objects;
+create policy "Admins can delete product images" on storage.objects
+  for delete to authenticated using (bucket_id = 'product-images');
