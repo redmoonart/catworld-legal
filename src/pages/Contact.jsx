@@ -1,13 +1,12 @@
 import { useI18n } from "../i18n/I18nContext";
 import { STORE_CONFIG } from "../data/config";
-import { waLink } from "../lib/whatsapp";
 import PageHead from "../components/PageHead";
 import Reveal from "../components/Reveal";
 import FAQItem from "../components/FAQItem";
 
 export default function Contact() {
   const { t } = useI18n();
-  const waHref = waLink(STORE_CONFIG.whatsapp, t("wa.generic", { store: STORE_CONFIG.name }));
+  const tel = (STORE_CONFIG.phoneDisplay || "").replace(/\s/g, "");
 
   return (
     <>
@@ -16,12 +15,6 @@ export default function Contact() {
         <div className="wrap">
           <div className="info-grid">
             <Reveal className="info-card">
-              <div className="ic">📱</div>
-              <h3>{t("contact.wa_t")}</h3>
-              <p style={{ color: "var(--muted)", margin: "6px 0 14px" }}>{t("contact.wa_d")}</p>
-              <a className="btn btn-wa" href={waHref} target="_blank" rel="noreferrer">{t("contact.wa_btn")}</a>
-            </Reveal>
-            <Reveal className="info-card" delay={0.06}>
               <div className="ic">✉️</div>
               <h3>{t("contact.email_t")}</h3>
               <p style={{ color: "var(--muted)", margin: "6px 0 14px" }}>{t("contact.email_d")}</p>
@@ -31,7 +24,7 @@ export default function Contact() {
               <div className="ic">📞</div>
               <h3>{t("contact.phone_t")}</h3>
               <p style={{ color: "var(--muted)", margin: "6px 0 14px" }}>{t("contact.phone_d")}</p>
-              <p style={{ fontWeight: 800, fontSize: "1.2rem", color: "var(--primary)" }}>{STORE_CONFIG.phoneDisplay}</p>
+              <a href={`tel:${tel}`} dir="ltr" style={{ fontWeight: 800, fontSize: "1.2rem", color: "var(--primary)" }}>{STORE_CONFIG.phoneDisplay}</a>
             </Reveal>
             <Reveal className="info-card" delay={0.18}>
               <div className="ic">📍</div>

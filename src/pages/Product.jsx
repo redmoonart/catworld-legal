@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useI18n } from "../i18n/I18nContext";
 import { useCart } from "../cart/CartContext";
 import { useProducts } from "../data/ProductsContext";
@@ -8,12 +8,12 @@ import ProductCard from "../components/ProductCard";
 import TiltCard from "../components/TiltCard";
 import { pName, pDesc } from "../lib/product";
 import { money } from "../lib/format";
-import { waLink } from "../lib/whatsapp";
 
 export default function Product() {
   const { id } = useParams();
   const { t, lang } = useI18n();
   const { addToCart } = useCart();
+  const navigate = useNavigate();
   const { products, loading } = useProducts();
   const [qty, setQty] = useState(1);
 
@@ -50,8 +50,7 @@ export default function Product() {
   }
   function handleBuy() {
     addToCart(p.id, qty);
-    const msg = `${t("pdp.wa_msg")}\n• ${pName(p, lang)} ×${qty} = ${money(p.price * qty, STORE_CONFIG.currency)}\n${STORE_CONFIG.name}`;
-    window.open(waLink(STORE_CONFIG.whatsapp, msg), "_blank");
+    navigate("/cart");
   }
 
   return (
@@ -92,7 +91,7 @@ export default function Product() {
                   <button type="button" onClick={() => setQty((v) => v + 1)}>+</button>
                 </div>
                 <button className="btn btn-primary btn-lg" onClick={handleAdd}>{t("pdp.add")}</button>
-                <button className="btn btn-wa btn-lg" onClick={handleBuy}>{t("pdp.buy")}</button>
+                <button className="btn btn-accent btn-lg" onClick={handleBuy} disabled={out}>{t("pdp.buy")}</button>
               </div>
             )}
           </div>

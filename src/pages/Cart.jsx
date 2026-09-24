@@ -7,12 +7,11 @@ import { STORE_CONFIG } from "../data/config";
 import PageHead from "../components/PageHead";
 import { pName, wName } from "../lib/product";
 import { money } from "../lib/format";
-import { waLink } from "../lib/whatsapp";
 import { saveOrder, makeOrderRef } from "../lib/orders";
 
 export default function Cart() {
   const { t, lang } = useI18n();
-  const { cart, byId, setQty, removeFromCart, subtotal } = useCart();
+  const { cart, byId, setQty, removeFromCart, clearCart, subtotal } = useCart();
 
   const [deliveryType, setDeliveryType] = useState("home");
   const [wilayaCode, setWilayaCode] = useState("");
@@ -30,53 +29,32 @@ export default function Cart() {
   const remain = STORE_CONFIG.freeShippingThreshold ? STORE_CONFIG.freeShippingThreshold - subtotal : 0;
 
   const [sending, setSending] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+  const [placedRef, setPlacedRef] = useState(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
     const phoneOk = /^0[5-7]\d{8}$/.test(phone.replace(/\s/g, ""));
-    const nameOk = name.trim().length > 0;
+    const nameOk = name.trim().length > 1;
     const wilayaOk = !!wilaya;
     setErrors({ name: !nameOk, phone: !phoneOk, wilaya: !wilayaOk });
     if (!nameOk || !phoneOk || !wilayaOk || sending) return;
 
-    // نفتح نافذة واتساب فوراً (قبل أي انتظار) حتى لا يحجبها المتصفح
-    const waWindow = window.open("", "_blank");
-    const ref = makeOrderRef();
-
     const price = deliveryType === "office" ? wilaya.office : wilaya.home;
     const delFinal = isFree ? 0 : price;
     const grandTotal = subtotal + delFinal;
-
-    let msg = t("wa.new_order", { store: STORE_CONFIG.name }) + "\n";
-    msg += `🧾 #${ref}\n`;
-    msg += "━━━━━━━━━━━━━━━\n";
-    cart.forEach((i) => {
-      const p = byId(i.id);
-      if (p) msg += `• ${pName(p, lang)}  ×${i.qty} = ${money(p.price * i.qty, STORE_CONFIG.currency)}\n`;
-    });
-    msg += "━━━━━━━━━━━━━━━\n";
-    msg += `${t("wa.subtotal")}: ${money(subtotal, STORE_CONFIG.currency)}\n`;
-    const dtLabel = deliveryType === "office" ? t("wa.office") : t("wa.home");
-    msg += `${t("wa.delivery")} (${dtLabel}): ${isFree ? t("cart.free") : money(delFinal, STORE_CONFIG.currency)}\n`;
-    msg += `*${t("wa.total")}: ${money(grandTotal, STORE_CONFIG.currency)}*\n`;
-    msg += "━━━━━━━━━━━━━━━\n";
-    msg += `👤 ${t("wa.name")}: ${name.trim()}\n`;
-    msg += `📞 ${t("wa.phone")}: ${phone.trim()}\n`;
-    msg += `🏙️ ${t("wa.wilaya")}: ${wilaya.code} - ${wName(wilaya, lang)}\n`;
-    if (city.trim()) msg += `📍 ${t("wa.address")}: ${city.trim()}\n`;
-    msg += `🚚 ${t("wa.dtype")}: ${deliveryType === "office" ? t("wa.dtype_office") : t("wa.dtype_home")}\n`;
-    if (notes.trim()) msg += `📝 ${t("wa.notes")}: ${notes.trim()}\n`;
-    msg += `💵 ${t("wa.payment")}: ${t("wa.cod")}\n`;
-
-    // حفظ الطلب في Supabase — إن فشل الحفظ يبقى إرسال واتساب يعمل
-    setSending(true);
+    const ref = makeOrderRef();
     const items = cart
       .map((i) => {
         const p = byId(i.id);
         return p ? { id: p.id, name: p.name, qty: i.qty, price: p.price } : null;
       })
       .filter(Boolean);
-    await saveOrder({
+
+    // الطلب يُحفظ في Supabase ويظهر مباشرة في تطبيق "إدارة متجري"
+    setSending(true);
+    setSaveError(false);
+    const ok = await saveOrder({
       ref,
       customer_name: name.trim(),
       phone: phone.replace(/\s/g, ""),
@@ -90,9 +68,32 @@ export default function Cart() {
     });
     setSending(false);
 
-    const url = waLink(STORE_CONFIG.whatsapp, msg);
-    if (waWindow && !waWindow.closed) waWindow.location.href = url;
-    else window.location.href = url;
+    if (!ok) {
+      setSaveError(true);
+      return;
+    }
+    setPlacedRef(ref);
+    clearCart();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  if (placedRef) {
+    return (
+      <>
+        <PageHead title={t("cart.head_title")} subtitle={t("cart.head_sub")} chips={["💵", "🚚", "✅", "📦"]} />
+        <section className="section">
+          <div className="wrap">
+            <div className="empty-state order-success">
+              <div className="em">✅</div>
+              <h3>{t("cart.ok_t")}</h3>
+              <p>{t("cart.ok_p")}</p>
+              <p className="order-ref">{t("cart.ok_ref")}: <strong dir="ltr">{placedRef}</strong></p>
+              <Link className="btn btn-primary btn-lg" to="/shop">{t("cart.ok_btn")}</Link>
+            </div>
+          </div>
+        </section>
+      </>
+    );
   }
 
   if (!cart.length) {
@@ -211,7 +212,8 @@ export default function Cart() {
                     <label>{t("cart.f_notes")}</label>
                     <textarea rows={2} placeholder={t("cart.ph_notes")} value={notes} onChange={(e) => setNotes(e.target.value)} />
                   </div>
-                  <button type="submit" className="btn btn-wa btn-block btn-lg" disabled={sending}>{sending ? "..." : t("cart.submit")}</button>
+                  {saveError && <p className="field-error show" role="alert" style={{ marginBottom: 10 }}>{t("cart.save_err")}</p>}
+                  <button type="submit" className="btn btn-primary btn-block btn-lg" disabled={sending}>{sending ? t("cart.sending") : t("cart.submit")}</button>
                   <p style={{ textAlign: "center", color: "var(--muted)", fontSize: ".82rem", marginTop: 10 }}>{t("cart.cod_note")}</p>
                 </form>
               </div>
