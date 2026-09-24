@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useProducts } from "../data/ProductsContext";
 import { useSubcategories } from "../data/SubcategoriesContext";
 import { useAdminAuth } from "../admin/AdminAuthContext";
@@ -6,16 +6,31 @@ import { supabase } from "../lib/supabaseClient";
 import ProductForm from "../admin/ProductForm";
 import SubcategoriesManager from "../admin/SubcategoriesManager";
 import OrdersManager from "../admin/OrdersManager";
+import { useNewOrdersAlert } from "../admin/useNewOrdersAlert";
+import { onInstallAvailable, promptInstall, isStandalone } from "../admin/pwa";
 
 export default function AdminDashboard() {
   const { products, loading, refresh } = useProducts();
   const { subcategories } = useSubcategories();
   const { signOut } = useAdminAuth();
-  const [tab, setTab] = useState("products"); // "orders" | "products" | "categories"
+  const [tab, setTab] = useState("orders"); // "orders" | "products" | "categories"
   const [editing, setEditing] = useState(null); // null = closed, "new" = new, product = editing
   const [q, setQ] = useState("");
   const [deleteBusy, setDeleteBusy] = useState(null);
   const [deleteError, setDeleteError] = useState("");
+  const { newCount, tick, recheck } = useNewOrdersAlert();
+  const [canInstall, setCanInstall] = useState(false);
+  const [notifPerm, setNotifPerm] = useState(
+    typeof Notification !== "undefined" ? Notification.permission : "unsupported"
+  );
+
+  useEffect(() => onInstallAvailable(setCanInstall), []);
+
+  async function enableNotifications() {
+    if (typeof Notification === "undefined") return;
+    const p = await Notification.requestPermission();
+    setNotifPerm(p);
+  }
 
   const subcatLabelBySlug = useMemo(
     () => Object.fromEntries(subcategories.map((s) => [s.slug, s.labelAr])),
@@ -50,8 +65,16 @@ export default function AdminDashboard() {
   return (
     <div className="admin-dashboard" dir="rtl">
       <div className="admin-topbar">
-        <h1>لوحة التحكم</h1>
-        <button className="btn btn-ghost" onClick={signOut}>تسجيل الخروج</button>
+        <h1>🛍️ إدارة متجري</h1>
+        <div className="admin-topbar-actions">
+          {canInstall && !isStandalone() && (
+            <button className="btn btn-primary btn-sm" onClick={promptInstall}>📲 تثبيت التطبيق</button>
+          )}
+          {notifPerm === "default" && (
+            <button className="btn btn-ghost btn-sm" onClick={enableNotifications}>🔔 تفعيل التنبيهات</button>
+          )}
+          <button className="btn btn-ghost btn-sm" onClick={signOut}>تسجيل الخروج</button>
+        </div>
       </div>
 
       <div className="admin-tabs">
@@ -59,7 +82,7 @@ export default function AdminDashboard() {
           className={`admin-tab${tab === "orders" ? " active" : ""}`}
           onClick={() => { setTab("orders"); setEditing(null); }}
         >
-          الطلبات
+          الطلبات{newCount > 0 && <span className="admin-badge">{newCount}</span>}
         </button>
         <button
           className={`admin-tab${tab === "products" ? " active" : ""}`}
@@ -76,7 +99,7 @@ export default function AdminDashboard() {
       </div>
 
       {tab === "orders" ? (
-        <OrdersManager />
+        <OrdersManager refreshSignal={tick} onChanged={recheck} />
       ) : tab === "categories" ? (
         <SubcategoriesManager />
       ) : editing ? (

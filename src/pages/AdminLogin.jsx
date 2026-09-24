@@ -25,7 +25,7 @@ export default function AdminLogin() {
   return (
     <div className="admin-auth-screen" dir="rtl">
       <form className="admin-auth-card" onSubmit={handleSubmit}>
-        <h1>لوحة تحكم الأدمن</h1>
+        <h1>🛍️ إدارة متجري</h1>
         <p className="admin-auth-sub">Kids of the Future</p>
         <label>
           البريد الإلكتروني
