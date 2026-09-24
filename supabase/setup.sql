@@ -148,3 +148,45 @@ values
   ('school-tools', 'school', '✏️', 'أدوات مدرسية', 'Fournitures scolaires', 'School tools', 7),
   ('study-essentials', 'school', '🎁', 'مستلزمات الدراسة', 'Essentiels d''étude', 'Study essentials', 8)
 on conflict (slug) do nothing;
+
+-- ============================================================
+-- الطلبات (orders): الزبون يرسل الطلب فقط، والمدير وحده يقرأ ويعدّل
+-- ============================================================
+create table if not exists public.orders (
+  id bigint generated always as identity primary key,
+  customer_name text not null check (char_length(customer_name) between 2 and 100),
+  phone text not null check (char_length(phone) between 8 and 20),
+  wilaya text check (char_length(wilaya) <= 60),
+  address text check (char_length(address) <= 300),
+  items jsonb not null check (jsonb_typeof(items) = 'array' and jsonb_array_length(items) between 1 and 50),
+  total integer not null check (total >= 0),
+  notes text check (char_length(notes) <= 500),
+  status text not null default 'new' check (status in ('new','confirmed','shipped','delivered','cancelled')),
+  created_at timestamptz not null default now()
+);
+
+alter table public.orders add column if not exists ref text unique check (char_length(ref) <= 20);
+alter table public.orders add column if not exists delivery_type text check (delivery_type in ('home','office'));
+alter table public.orders add column if not exists delivery_price integer check (delivery_price >= 0);
+
+alter table public.orders enable row level security;
+
+drop policy if exists "Anyone can place orders" on public.orders;
+create policy "Anyone can place orders" on public.orders
+  for insert to anon, authenticated with check (status = 'new');
+
+drop policy if exists "Admins can read orders" on public.orders;
+create policy "Admins can read orders" on public.orders
+  for select to authenticated using ((auth.jwt() ->> 'email') = 'aimen.bouss96@gmail.com');
+
+drop policy if exists "Admins can update orders" on public.orders;
+create policy "Admins can update orders" on public.orders
+  for update to authenticated
+  using ((auth.jwt() ->> 'email') = 'aimen.bouss96@gmail.com')
+  with check ((auth.jwt() ->> 'email') = 'aimen.bouss96@gmail.com');
+
+drop policy if exists "Admins can delete orders" on public.orders;
+create policy "Admins can delete orders" on public.orders
+  for delete to authenticated using ((auth.jwt() ->> 'email') = 'aimen.bouss96@gmail.com');
+
+create index if not exists orders_created_at_idx on public.orders (created_at desc);
