@@ -13,6 +13,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import { AdminAuthProvider } from "./admin/AdminAuthContext";
 import RequireAdmin from "./admin/RequireAdmin";
+import { setupAdminPwa } from "./admin/pwa";
 
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
@@ -32,6 +33,7 @@ export default function App() {
   const isAdmin = pathname.startsWith("/admin");
 
   if (isAdmin) {
+    setupAdminPwa(); // تطبيق "إدارة متجري" (مرة واحدة فقط)
     return (
       <AdminAuthProvider>
         <Suspense fallback={null}>
