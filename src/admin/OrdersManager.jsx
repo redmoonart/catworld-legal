@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { ORDER_STATUSES } from "../lib/orders";
-import { waLink } from "../lib/whatsapp";
 
 function fmtDate(iso) {
   try {
@@ -9,12 +8,6 @@ function fmtDate(iso) {
   } catch {
     return iso;
   }
-}
-
-// 0555123456 → 213555123456 لفتح محادثة واتساب مع الزبون
-function customerWa(phone) {
-  const d = (phone || "").replace(/\D/g, "");
-  return d.startsWith("0") ? "213" + d.slice(1) : d;
 }
 
 export default function OrdersManager({ refreshSignal = 0, onChanged }) {
@@ -168,7 +161,6 @@ function FragmentRow({ o, isOpen, onToggle, onStatus, onDelete, busy }) {
         </td>
         <td className="admin-row-actions">
           <a className="btn btn-ghost btn-sm" href={`tel:${o.phone}`}>📞 اتصال</a>
-          <a className="btn btn-ghost btn-sm" href={waLink(customerWa(o.phone), `مرحباً ${o.customer_name}، بخصوص طلبك ${o.ref || ""}`)} target="_blank" rel="noreferrer">واتساب</a>
           <button className="btn btn-ghost btn-sm admin-danger" onClick={onDelete} disabled={busy}>
             {busy ? "..." : "حذف"}
           </button>
