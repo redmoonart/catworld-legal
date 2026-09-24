@@ -167,6 +167,7 @@ function FragmentRow({ o, isOpen, onToggle, onStatus, onDelete, busy }) {
           </select>
         </td>
         <td className="admin-row-actions">
+          <a className="btn btn-ghost btn-sm" href={`tel:${o.phone}`}>📞 اتصال</a>
           <a className="btn btn-ghost btn-sm" href={waLink(customerWa(o.phone), `مرحباً ${o.customer_name}، بخصوص طلبك ${o.ref || ""}`)} target="_blank" rel="noreferrer">واتساب</a>
           <button className="btn btn-ghost btn-sm admin-danger" onClick={onDelete} disabled={busy}>
             {busy ? "..." : "حذف"}
