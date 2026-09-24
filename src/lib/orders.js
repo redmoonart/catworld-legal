@@ -1,6 +1,6 @@
 import { supabase } from "./supabaseClient";
 
-// رقم طلب قصير يظهر في رسالة واتساب وفي لوحة التحكم (مثال: KF-M3X9A7-4Q)
+// رقم طلب قصير يظهر للزبون بعد الطلب وفي تطبيق "إدارة متجري" (مثال: KF-M3X9A7-4Q)
 export function makeOrderRef() {
   const time = Date.now().toString(36).toUpperCase();
   const rand = Math.random().toString(36).slice(2, 4).toUpperCase();
@@ -8,7 +8,7 @@ export function makeOrderRef() {
 }
 
 // يحفظ الطلب في جدول orders. لا نطلب .select() لأن الزائر لا يملك صلاحية القراءة.
-// يرجع true عند النجاح، ولا يرمي خطأ حتى لا يتعطل إرسال واتساب.
+// يرجع true عند النجاح و false عند الفشل (لا يرمي خطأ).
 export async function saveOrder(order) {
   try {
     const { error } = await supabase.from("orders").insert(order);
