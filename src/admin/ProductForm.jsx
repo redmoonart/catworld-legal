@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
-import { SUBCATS } from "./SUBCATS";
+import { useSubcategories } from "../data/SubcategoriesContext";
 
 const BLANK = {
   id: "",
@@ -48,6 +48,8 @@ export default function ProductForm({ initial, nextId, onCancel, onSaved }) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const { subcategories } = useSubcategories();
+  const subcatOptions = subcategories.filter((s) => s.category === f.category);
 
   function set(key) {
     return (e) => {
@@ -100,7 +102,19 @@ export default function ProductForm({ initial, nextId, onCancel, onSaved }) {
         </label>
         <label>
           الفئة
-          <select value={f.category} onChange={set("category")}>
+          <select
+            value={f.category}
+            onChange={(e) => {
+              const category = e.target.value;
+              setF((prev) => ({
+                ...prev,
+                category,
+                subCategory: subcategories.some((s) => s.category === category && s.slug === prev.subCategory)
+                  ? prev.subCategory
+                  : "",
+              }));
+            }}
+          >
             <option value="toys">ألعاب</option>
             <option value="school">أدوات مدرسية</option>
           </select>
@@ -108,8 +122,9 @@ export default function ProductForm({ initial, nextId, onCancel, onSaved }) {
         <label>
           الفئة الفرعية
           <select value={f.subCategory} onChange={set("subCategory")}>
-            {SUBCATS.map((s) => (
-              <option key={s.value} value={s.value}>{s.label}</option>
+            <option value="">— بدون —</option>
+            {subcatOptions.map((s) => (
+              <option key={s.slug} value={s.slug}>{s.labelAr}</option>
             ))}
           </select>
         </label>

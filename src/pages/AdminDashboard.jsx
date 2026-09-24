@@ -1,19 +1,25 @@
 import { useState, useMemo } from "react";
 import { useProducts } from "../data/ProductsContext";
+import { useSubcategories } from "../data/SubcategoriesContext";
 import { useAdminAuth } from "../admin/AdminAuthContext";
 import { supabase } from "../lib/supabaseClient";
 import ProductForm from "../admin/ProductForm";
-import { SUBCATS } from "../admin/SUBCATS";
-
-const SUBCAT_LABEL = Object.fromEntries(SUBCATS.map((s) => [s.value, s.label]));
+import SubcategoriesManager from "../admin/SubcategoriesManager";
 
 export default function AdminDashboard() {
   const { products, loading, refresh } = useProducts();
+  const { subcategories } = useSubcategories();
   const { signOut } = useAdminAuth();
+  const [tab, setTab] = useState("products"); // "products" | "categories"
   const [editing, setEditing] = useState(null); // null = closed, "new" = new, product = editing
   const [q, setQ] = useState("");
   const [deleteBusy, setDeleteBusy] = useState(null);
   const [deleteError, setDeleteError] = useState("");
+
+  const subcatLabelBySlug = useMemo(
+    () => Object.fromEntries(subcategories.map((s) => [s.slug, s.labelAr])),
+    [subcategories]
+  );
 
   const nextId = useMemo(() => (products.length ? Math.max(...products.map((p) => p.id)) + 1 : 101), [products]);
 
@@ -43,11 +49,28 @@ export default function AdminDashboard() {
   return (
     <div className="admin-dashboard" dir="rtl">
       <div className="admin-topbar">
-        <h1>لوحة تحكم المنتجات</h1>
+        <h1>لوحة التحكم</h1>
         <button className="btn btn-ghost" onClick={signOut}>تسجيل الخروج</button>
       </div>
 
-      {editing ? (
+      <div className="admin-tabs">
+        <button
+          className={`admin-tab${tab === "products" ? " active" : ""}`}
+          onClick={() => { setTab("products"); setEditing(null); }}
+        >
+          المنتجات
+        </button>
+        <button
+          className={`admin-tab${tab === "categories" ? " active" : ""}`}
+          onClick={() => { setTab("categories"); setEditing(null); }}
+        >
+          الأصناف
+        </button>
+      </div>
+
+      {tab === "categories" ? (
+        <SubcategoriesManager />
+      ) : editing ? (
         <ProductForm
           initial={editing === "new" ? null : editing}
           nextId={nextId}
@@ -94,7 +117,7 @@ export default function AdminDashboard() {
                       <td>{p.name}</td>
                       <td>
                         {p.category === "toys" ? "ألعاب" : "مدرسي"}
-                        {p.subCategory ? ` — ${SUBCAT_LABEL[p.subCategory] || p.subCategory}` : ""}
+                        {p.subCategory ? ` — ${subcatLabelBySlug[p.subCategory] || p.subCategory}` : ""}
                       </td>
                       <td>
                         {p.price} دج

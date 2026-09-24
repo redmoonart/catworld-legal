@@ -6,6 +6,7 @@ import AppErrorBoundary from "./components/AppErrorBoundary";
 import { I18nProvider } from "./i18n/I18nContext";
 import { ToastProvider } from "./toast/ToastContext";
 import { ProductsProvider } from "./data/ProductsContext";
+import { SubcategoriesProvider } from "./data/SubcategoriesContext";
 import { CartProvider } from "./cart/CartContext";
 import "./styles/global.css";
 
@@ -16,9 +17,11 @@ createRoot(document.getElementById("root")).render(
         <I18nProvider>
           <ToastProvider>
             <ProductsProvider>
-              <CartProvider>
-                <App />
-              </CartProvider>
+              <SubcategoriesProvider>
+                <CartProvider>
+                  <App />
+                </CartProvider>
+              </SubcategoriesProvider>
             </ProductsProvider>
           </ToastProvider>
         </I18nProvider>
