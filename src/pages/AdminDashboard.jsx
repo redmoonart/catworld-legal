@@ -5,12 +5,13 @@ import { useAdminAuth } from "../admin/AdminAuthContext";
 import { supabase } from "../lib/supabaseClient";
 import ProductForm from "../admin/ProductForm";
 import SubcategoriesManager from "../admin/SubcategoriesManager";
+import OrdersManager from "../admin/OrdersManager";
 
 export default function AdminDashboard() {
   const { products, loading, refresh } = useProducts();
   const { subcategories } = useSubcategories();
   const { signOut } = useAdminAuth();
-  const [tab, setTab] = useState("products"); // "products" | "categories"
+  const [tab, setTab] = useState("products"); // "orders" | "products" | "categories"
   const [editing, setEditing] = useState(null); // null = closed, "new" = new, product = editing
   const [q, setQ] = useState("");
   const [deleteBusy, setDeleteBusy] = useState(null);
@@ -55,6 +56,12 @@ export default function AdminDashboard() {
 
       <div className="admin-tabs">
         <button
+          className={`admin-tab${tab === "orders" ? " active" : ""}`}
+          onClick={() => { setTab("orders"); setEditing(null); }}
+        >
+          الطلبات
+        </button>
+        <button
           className={`admin-tab${tab === "products" ? " active" : ""}`}
           onClick={() => { setTab("products"); setEditing(null); }}
         >
@@ -68,7 +75,9 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      {tab === "categories" ? (
+      {tab === "orders" ? (
+        <OrdersManager />
+      ) : tab === "categories" ? (
         <SubcategoriesManager />
       ) : editing ? (
         <ProductForm

@@ -8,6 +8,7 @@ import PageHead from "../components/PageHead";
 import { pName, wName } from "../lib/product";
 import { money } from "../lib/format";
 import { waLink } from "../lib/whatsapp";
+import { saveOrder, makeOrderRef } from "../lib/orders";
 
 export default function Cart() {
   const { t, lang } = useI18n();
@@ -28,19 +29,26 @@ export default function Cart() {
   const total = subtotal + (wilaya ? finalDelivery : 0);
   const remain = STORE_CONFIG.freeShippingThreshold ? STORE_CONFIG.freeShippingThreshold - subtotal : 0;
 
-  function handleSubmit(e) {
+  const [sending, setSending] = useState(false);
+
+  async function handleSubmit(e) {
     e.preventDefault();
     const phoneOk = /^0[5-7]\d{8}$/.test(phone.replace(/\s/g, ""));
     const nameOk = name.trim().length > 0;
     const wilayaOk = !!wilaya;
     setErrors({ name: !nameOk, phone: !phoneOk, wilaya: !wilayaOk });
-    if (!nameOk || !phoneOk || !wilayaOk) return;
+    if (!nameOk || !phoneOk || !wilayaOk || sending) return;
+
+    // نفتح نافذة واتساب فوراً (قبل أي انتظار) حتى لا يحجبها المتصفح
+    const waWindow = window.open("", "_blank");
+    const ref = makeOrderRef();
 
     const price = deliveryType === "office" ? wilaya.office : wilaya.home;
     const delFinal = isFree ? 0 : price;
     const grandTotal = subtotal + delFinal;
 
     let msg = t("wa.new_order", { store: STORE_CONFIG.name }) + "\n";
+    msg += `🧾 #${ref}\n`;
     msg += "━━━━━━━━━━━━━━━\n";
     cart.forEach((i) => {
       const p = byId(i.id);
@@ -59,7 +67,32 @@ export default function Cart() {
     msg += `🚚 ${t("wa.dtype")}: ${deliveryType === "office" ? t("wa.dtype_office") : t("wa.dtype_home")}\n`;
     if (notes.trim()) msg += `📝 ${t("wa.notes")}: ${notes.trim()}\n`;
     msg += `💵 ${t("wa.payment")}: ${t("wa.cod")}\n`;
-    window.open(waLink(STORE_CONFIG.whatsapp, msg), "_blank");
+
+    // حفظ الطلب في Supabase — إن فشل الحفظ يبقى إرسال واتساب يعمل
+    setSending(true);
+    const items = cart
+      .map((i) => {
+        const p = byId(i.id);
+        return p ? { id: p.id, name: p.name, qty: i.qty, price: p.price } : null;
+      })
+      .filter(Boolean);
+    await saveOrder({
+      ref,
+      customer_name: name.trim(),
+      phone: phone.replace(/\s/g, ""),
+      wilaya: `${wilaya.code} - ${wilaya.name}`,
+      address: city.trim() || null,
+      delivery_type: deliveryType,
+      delivery_price: delFinal,
+      items,
+      total: grandTotal,
+      notes: notes.trim() || null,
+    });
+    setSending(false);
+
+    const url = waLink(STORE_CONFIG.whatsapp, msg);
+    if (waWindow && !waWindow.closed) waWindow.location.href = url;
+    else window.location.href = url;
   }
 
   if (!cart.length) {
@@ -178,7 +211,7 @@ export default function Cart() {
                     <label>{t("cart.f_notes")}</label>
                     <textarea rows={2} placeholder={t("cart.ph_notes")} value={notes} onChange={(e) => setNotes(e.target.value)} />
                   </div>
-                  <button type="submit" className="btn btn-wa btn-block btn-lg">{t("cart.submit")}</button>
+                  <button type="submit" className="btn btn-wa btn-block btn-lg" disabled={sending}>{sending ? "..." : t("cart.submit")}</button>
                   <p style={{ textAlign: "center", color: "var(--muted)", fontSize: ".82rem", marginTop: 10 }}>{t("cart.cod_note")}</p>
                 </form>
               </div>
