@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useI18n } from "../i18n/I18nContext";
 import { useProducts } from "../data/ProductsContext";
+import { useSubcategories, subcatLabel } from "../data/SubcategoriesContext";
 import ProductCard from "../components/ProductCard";
 import PageHead from "../components/PageHead";
 import { pName } from "../lib/product";
@@ -9,6 +10,7 @@ import { pName } from "../lib/product";
 export default function Shop() {
   const { t, lang } = useI18n();
   const { products } = useProducts();
+  const { subcategories } = useSubcategories();
   const [searchParams, setSearchParams] = useSearchParams();
   const [cat, setCat] = useState(searchParams.get("cat") || "all");
   const subcat = searchParams.get("subcat") || "";
@@ -23,6 +25,26 @@ export default function Shop() {
     setCat(c);
     setSearchParams(c === "all" ? {} : { cat: c });
   }
+
+  function handleSub(slug) {
+    if (!slug) {
+      setSearchParams(cat === "all" ? {} : { cat });
+      return;
+    }
+    const sub = subcategories.find((s) => s.slug === slug);
+    setSearchParams(sub ? { cat: sub.category, subcat: slug } : { subcat: slug });
+  }
+
+  // الأصناف الظاهرة: أصناف الفئة المختارة (أو كل الأصناف)، مع إخفاء الأصناف الفارغة
+  const visibleSubs = useMemo(() => {
+    const counts = {};
+    products.forEach((p) => {
+      if (p.subCategory) counts[p.subCategory] = (counts[p.subCategory] || 0) + 1;
+    });
+    return subcategories
+      .filter((s) => (cat === "all" || s.category === cat) && counts[s.slug])
+      .map((s) => ({ ...s, count: counts[s.slug] }));
+  }, [subcategories, products, cat]);
 
   const list = useMemo(() => {
     let l = products.slice();
@@ -57,6 +79,22 @@ export default function Shop() {
                 {t("shop.chip_school")}
               </button>
             </div>
+            {visibleSubs.length > 0 && (
+              <div className="chips subchips" role="group" aria-label={t("shop.subcats")}>
+                <button className={`chip chip-sm${!subcat ? " active" : ""}`} onClick={() => handleSub("")}>
+                  {t("shop.chip_all")}
+                </button>
+                {visibleSubs.map((s) => (
+                  <button
+                    key={s.slug}
+                    className={`chip chip-sm${subcat === s.slug ? " active" : ""}`}
+                    onClick={() => handleSub(s.slug)}
+                  >
+                    {s.emoji ? `${s.emoji} ` : ""}{subcatLabel(s, lang)} <span className="chip-count">{s.count}</span>
+                  </button>
+                ))}
+              </div>
+            )}
             <div className="toolbar-tools">
               <div className="search-box">
                 <input type="search" placeholder={t("shop.search_ph")} value={q} onChange={(e) => setQ(e.target.value)} />
