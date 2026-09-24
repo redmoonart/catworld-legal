@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import { useI18n } from "../i18n/I18nContext";
 import { STORE_CONFIG } from "../data/config";
-import { waLink } from "../lib/whatsapp";
 
 export default function Footer() {
   const { t } = useI18n();
   const year = new Date().getFullYear();
-  const waHref = waLink(STORE_CONFIG.whatsapp, t("wa.generic", { store: STORE_CONFIG.name }));
+  const tel = (STORE_CONFIG.phoneDisplay || "").replace(/\s/g, "");
 
   return (
     <footer className="footer">
@@ -40,7 +39,7 @@ export default function Footer() {
           </div>
           <div>
             <h4>{t("footer.contact_us")}</h4>
-            <a href={waHref} target="_blank" rel="noreferrer">{t("footer.wa")}</a>
+            {tel && <a href={`tel:${tel}`}>{t("footer.wa")}</a>}
             <a href={`mailto:${STORE_CONFIG.email}`}>{t("footer.email")}</a>
             <p style={{ fontSize: ".85rem", marginTop: 8 }}>{t("footer.hours")}</p>
           </div>
