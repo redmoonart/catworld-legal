@@ -17,7 +17,7 @@ function customerWa(phone) {
   return d.startsWith("0") ? "213" + d.slice(1) : d;
 }
 
-export default function OrdersManager() {
+export default function OrdersManager({ refreshSignal = 0, onChanged }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -39,7 +39,7 @@ export default function OrdersManager() {
     else setOrders(data || []);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [refreshSignal]);
 
   const counts = useMemo(() => {
     const c = { all: orders.length };
@@ -63,7 +63,10 @@ export default function OrdersManager() {
     const { error } = await supabase.from("orders").update({ status }).eq("id", id);
     setBusy(null);
     if (error) setError(error.message);
-    else setOrders((list) => list.map((o) => (o.id === id ? { ...o, status } : o)));
+    else {
+      setOrders((list) => list.map((o) => (o.id === id ? { ...o, status } : o)));
+      onChanged?.();
+    }
   }
 
   async function handleDelete(o) {
@@ -73,7 +76,10 @@ export default function OrdersManager() {
     const { error } = await supabase.from("orders").delete().eq("id", o.id);
     setBusy(null);
     if (error) setError(error.message);
-    else setOrders((list) => list.filter((x) => x.id !== o.id));
+    else {
+      setOrders((list) => list.filter((x) => x.id !== o.id));
+      onChanged?.();
+    }
   }
 
   return (
@@ -86,7 +92,7 @@ export default function OrdersManager() {
           onChange={(e) => setQ(e.target.value)}
           className="admin-search"
         />
-        <button className="btn btn-ghost" onClick={load} disabled={loading}>🔄 تحديث</button>
+        <button className="btn btn-ghost" onClick={() => { load(); onChanged?.(); }} disabled={loading}>🔄 تحديث</button>
       </div>
 
       <div className="admin-order-filters">
