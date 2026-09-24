@@ -1194,3 +1194,7 @@ select.select:focus-visible {
   .admin-topbar { flex-wrap: wrap; }
   .admin-tabs { overflow-x: auto; }
 }
+
+/* ---- Order placed ---- */
+.order-success .order-ref { font-size: 1.05rem; margin: 6px 0 18px; }
+.order-success .order-ref strong { color: var(--primary-text); letter-spacing: .5px; }
