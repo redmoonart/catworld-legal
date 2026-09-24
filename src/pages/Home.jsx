@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useScroll } from "framer-motion";
 import { useI18n } from "../i18n/I18nContext";
 import { useProducts } from "../data/ProductsContext";
+import { useSubcategories, subcatLabel } from "../data/SubcategoriesContext";
 import ProductCard from "../components/ProductCard";
 import Reveal from "../components/Reveal";
 import RevealLink from "../components/RevealLink";
@@ -18,21 +19,14 @@ const FEATURES = [
   ["📞", "feat.support_t", "feat.support_d"],
 ];
 
-const CAT_STRIP = [
-  { emoji: "🧸", key: "catstrip.toys", to: "/shop?cat=toys" },
-  { emoji: "🧩", key: "catstrip.educational", to: "/shop?subcat=educational" },
-  { emoji: "🚗", key: "catstrip.vehicles", to: "/shop?subcat=vehicles" },
-  { emoji: "🎨", key: "catstrip.art", to: "/shop?subcat=art" },
-  { emoji: "🎮", key: "catstrip.misc", to: "/shop?subcat=misc-toys" },
-  { emoji: "🎒", key: "catstrip.backpacks", to: "/shop?subcat=backpacks" },
-  { emoji: "📚", key: "catstrip.notebooks", to: "/shop?subcat=notebooks" },
-  { emoji: "✏️", key: "catstrip.schooltools", to: "/shop?subcat=school-tools" },
-  { emoji: "🎁", key: "catstrip.study", to: "/shop?subcat=study-essentials" },
-];
-
 export default function Home() {
-  const { t, meta } = useI18n();
+  const { t, lang, meta } = useI18n();
   const { products } = useProducts();
+  const { subcategories } = useSubcategories();
+  const catStrip = [
+    { emoji: "🧸", label: t("catstrip.toys"), to: "/shop?cat=toys" },
+    ...subcategories.map((s) => ({ emoji: s.emoji || "🎁", label: subcatLabel(s, lang), to: `/shop?subcat=${s.slug}` })),
+  ];
   const picks = products.filter((p) => p.badge || p.oldPrice).slice(0, 8);
   const featured = picks.length ? picks : products.slice(0, 8);
   const schoolSupplies = products.filter((p) => p.category === "school").slice(0, 4);
@@ -95,10 +89,10 @@ export default function Home() {
             <p>{t("cats.sub")}</p>
           </ScrollReveal>
           <div className="cat-strip">
-            {CAT_STRIP.map((c, i) => (
+            {catStrip.map((c, i) => (
               <RevealLink key={c.to} to={c.to} className="cat-chip" delay={i * 0.05} y={16}>
                 <span className="ic">{c.emoji}</span>
-                <h3>{t(c.key)}</h3>
+                <h3>{c.label}</h3>
                 <span className="go">{meta.dir === "rtl" ? "←" : "→"}</span>
               </RevealLink>
             ))}

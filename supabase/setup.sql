@@ -101,3 +101,50 @@ create policy "Admins can update product images" on storage.objects
 drop policy if exists "Admins can delete product images" on storage.objects;
 create policy "Admins can delete product images" on storage.objects
   for delete to authenticated using (bucket_id = 'product-images');
+
+-- ------------------------------------------------------------
+-- Subcategories (managed from the admin dashboard, not hardcoded
+-- in the app anymore) — each belongs to one of the two top-level
+-- categories ('toys' or 'school').
+-- ------------------------------------------------------------
+create table if not exists public.subcategories (
+  slug text primary key,
+  category text not null check (category in ('toys', 'school')),
+  emoji text,
+  label_ar text not null,
+  label_fr text,
+  label_en text,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+alter table public.subcategories enable row level security;
+
+drop policy if exists "Public read subcategories" on public.subcategories;
+create policy "Public read subcategories" on public.subcategories
+  for select using (true);
+
+drop policy if exists "Admins can insert subcategories" on public.subcategories;
+create policy "Admins can insert subcategories" on public.subcategories
+  for insert to authenticated with check (true);
+
+drop policy if exists "Admins can update subcategories" on public.subcategories;
+create policy "Admins can update subcategories" on public.subcategories
+  for update to authenticated using (true) with check (true);
+
+drop policy if exists "Admins can delete subcategories" on public.subcategories;
+create policy "Admins can delete subcategories" on public.subcategories
+  for delete to authenticated using (true);
+
+-- Seed: the 8 subcategories the site already used (safe to re-run)
+insert into public.subcategories (slug, category, emoji, label_ar, label_fr, label_en, sort_order)
+values
+  ('educational', 'toys', '🧩', 'ألعاب تعليمية', 'Jouets éducatifs', 'Educational toys', 1),
+  ('vehicles', 'toys', '🚗', 'سيارات ومركبات', 'Voitures et véhicules', 'Cars & vehicles', 2),
+  ('art', 'toys', '🎨', 'أدوات الرسم', 'Matériel de dessin', 'Art supplies', 3),
+  ('misc-toys', 'toys', '🎮', 'ألعاب متنوعة', 'Jouets variés', 'Assorted toys', 4),
+  ('backpacks', 'school', '🎒', 'حقائب مدرسية', 'Cartables', 'Backpacks', 5),
+  ('notebooks', 'school', '📚', 'دفاتر وكتب', 'Cahiers et livres', 'Notebooks & books', 6),
+  ('school-tools', 'school', '✏️', 'أدوات مدرسية', 'Fournitures scolaires', 'School tools', 7),
+  ('study-essentials', 'school', '🎁', 'مستلزمات الدراسة', 'Essentiels d''étude', 'Study essentials', 8)
+on conflict (slug) do nothing;
