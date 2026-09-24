@@ -2,7 +2,6 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import WhatsAppFloat from "./components/WhatsAppFloat";
 import CartDrawer from "./components/CartDrawer";
 import { useCart } from "./cart/CartContext";
 import Home from "./pages/Home";
@@ -66,7 +65,6 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
-      <WhatsAppFloat />
       <CartDrawer />
     </>
   );
