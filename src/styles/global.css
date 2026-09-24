@@ -1182,3 +1182,15 @@ select.select:focus-visible {
 .admin-order-details td { white-space: normal; background: var(--bg); }
 .admin-order-details ul { margin: 0 0 8px; padding-inline-start: 18px; }
 .admin-order-details p { margin: 4px 0; }
+
+/* ---- Admin app ("إدارة متجري") ---- */
+.admin-topbar-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.admin-badge {
+  display: inline-block; min-width: 20px; padding: 1px 6px; margin-inline-start: 6px;
+  border-radius: 999px; background: #c0392b; color: #fff; font-size: .75rem; line-height: 18px; text-align: center;
+}
+@media (max-width: 640px) {
+  .admin-dashboard { padding: 16px 12px 40px; }
+  .admin-topbar { flex-wrap: wrap; }
+  .admin-tabs { overflow-x: auto; }
+}
