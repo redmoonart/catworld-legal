@@ -1166,3 +1166,19 @@ select.select:focus-visible {
 .admin-subcat-slug { color: var(--muted); font-size: .82rem; flex: 1; }
 .admin-subcat-row .admin-row-actions { margin-inline-start: auto; }
 .admin-subcat-empty { color: var(--muted); font-size: .9rem; margin: 0; }
+
+/* ---- Admin: orders ---- */
+.admin-order-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.admin-chip {
+  border: 1px solid var(--line); background: #fff; border-radius: 999px;
+  padding: 6px 12px; font-size: .82rem; cursor: pointer; font-family: inherit;
+}
+.admin-chip.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+.admin-link { background: none; border: none; padding: 0; cursor: pointer; font: inherit; font-weight: 700; color: var(--primary-text); }
+.admin-sub { color: var(--muted); font-size: .8rem; }
+.admin-status-select { padding: 4px 6px; border-radius: var(--radius-sm); border: 1px solid var(--line); font-family: inherit; }
+.admin-order-row.status-new { background: #fffbea; }
+.admin-order-row.status-cancelled td { color: var(--muted); }
+.admin-order-details td { white-space: normal; background: var(--bg); }
+.admin-order-details ul { margin: 0 0 8px; padding-inline-start: 18px; }
+.admin-order-details p { margin: 4px 0; }
