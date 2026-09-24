@@ -1128,6 +1128,16 @@ select.select:focus-visible {
 .admin-checkbox input { width: auto; padding: 0; }
 .admin-form-actions { display: flex; gap: 10px; }
 
+.admin-image-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.admin-image-preview {
+  width: 64px; height: 64px; object-fit: cover; border-radius: var(--radius-sm);
+  border: 1px solid var(--line); flex-shrink: 0; background: var(--bg);
+}
+.admin-image-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; flex: 1; min-width: 200px; }
+.admin-image-controls input[type="file"] { font-size: .82rem; padding: 0; border: none; background: none; }
+.admin-uploading { color: var(--muted); font-size: .85rem; }
+.admin-image-url { flex: 1; min-width: 180px; }
+
 @media (max-width: 760px) {
   .admin-form-grid { grid-template-columns: 1fr; }
   .admin-span-2, .admin-span-3 { grid-column: span 1; }
