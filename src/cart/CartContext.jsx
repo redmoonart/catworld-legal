@@ -58,6 +58,8 @@ export function CartProvider({ children }) {
     setCart((prev) => prev.filter((i) => i.id !== id));
   }, []);
 
+  const clearCart = useCallback(() => setCart([]), []);
+
   const count = useMemo(() => cart.reduce((s, i) => s + i.qty, 0), [cart]);
   const subtotal = useMemo(
     () => cart.reduce((s, i) => {
@@ -68,8 +70,8 @@ export function CartProvider({ children }) {
   );
 
   const value = useMemo(
-    () => ({ cart, addToCart, setQty, removeFromCart, count, subtotal, byId, drawerOpen, openDrawer, closeDrawer }),
-    [cart, addToCart, setQty, removeFromCart, count, subtotal, byId, drawerOpen, openDrawer, closeDrawer]
+    () => ({ cart, addToCart, setQty, removeFromCart, clearCart, count, subtotal, byId, drawerOpen, openDrawer, closeDrawer }),
+    [cart, addToCart, setQty, removeFromCart, clearCart, count, subtotal, byId, drawerOpen, openDrawer, closeDrawer]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
